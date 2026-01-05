@@ -11,6 +11,9 @@
           FiMana
         </div>
       </template>
+      <template #right>
+        <ThemeToggle />
+      </template>
     </UHeader>
 
     <UMain>
