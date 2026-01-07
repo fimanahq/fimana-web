@@ -1,8 +1,7 @@
 <template>
   <div class="landing-shell min-h-screen text-[var(--landing-ink)]">
-    <a href="#main-content" class="skip-link">Skip to content</a>
     <LandingHeader />
-    <UMain id="main-content">
+    <UMain>
       <slot />
     </UMain>
     <LandingFooter />
@@ -46,23 +45,5 @@
 
 .landing-shell {
   background: var(--landing-bg);
-}
-
-.skip-link {
-  position: absolute;
-  left: 1rem;
-  top: -3rem;
-  z-index: 50;
-  border-radius: 999px;
-  background: var(--landing-accent);
-  color: #fff;
-  padding: 0.5rem 0.9rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  transition: top 0.2s ease;
-}
-
-.skip-link:focus {
-  top: 1rem;
 }
 </style>
