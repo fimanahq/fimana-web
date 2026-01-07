@@ -5,11 +5,9 @@
 
   useSeoMeta({
     title: 'FiMana | Financial Management for individuals',
-    description:
-      'FiMana helps individuals track spending, build budgets, and grow savings with a clear daily view.',
+    description: 'FiMana helps individuals track spending, build budgets, and grow savings with a clear daily view.',
     ogTitle: 'FiMana | Financial Management for individuals',
-    ogDescription:
-      'FiMana helps individuals track spending, build budgets, and grow savings with a clear daily view.',
+    ogDescription: 'FiMana helps individuals track spending, build budgets, and grow savings with a clear daily view.',
     ogType: 'website'
   })
 
@@ -140,12 +138,8 @@
   <div>
     <section class="relative overflow-hidden" aria-labelledby="hero-title">
       <div class="pointer-events-none absolute inset-0">
-        <div
-          class="absolute -top-24 left-0 h-64 w-64 rounded-full bg-[var(--landing-accent)] opacity-20 blur-3xl"
-        />
-        <div
-          class="absolute top-10 right-0 h-72 w-72 rounded-full bg-[var(--landing-highlight)] opacity-20 blur-3xl"
-        />
+        <div class="absolute -top-24 left-0 h-64 w-64 rounded-full bg-[var(--landing-accent)] opacity-20 blur-3xl" />
+        <div class="absolute top-10 right-0 h-72 w-72 rounded-full bg-[var(--landing-highlight)] opacity-20 blur-3xl" />
       </div>
 
       <UContainer class="relative py-16 sm:py-20 lg:py-24">
@@ -171,19 +165,10 @@
             </p>
 
             <div class="fade-up fade-up-delay-2 flex flex-wrap gap-3">
-              <UButton
-                size="lg"
-                to="/login"
-                class="!bg-[var(--landing-accent)] !text-white hover:!bg-[var(--landing-accent-strong)]"
-              >
+              <UButton to="/login">
                 Start free
               </UButton>
-              <UButton
-                size="lg"
-                variant="outline"
-                to="#pricing"
-                class="border-[var(--landing-border)] text-[var(--landing-ink)]"
-              >
+              <UButton variant="outline" to="#pricing">
                 View pricing
               </UButton>
             </div>
@@ -209,9 +194,7 @@
                     $128,430
                   </p>
                 </div>
-                <span
-                  class="rounded-full bg-[var(--landing-accent-soft)] px-3 py-1 text-xs font-semibold text-[var(--landing-accent)]"
-                >
+                <span class="rounded-full bg-[var(--landing-accent-soft)] px-3 py-1 text-xs font-semibold text-[var(--landing-accent)]">
                   +12% this month
                 </span>
               </div>
@@ -294,11 +277,12 @@
         </div>
 
         <div class="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          <div
+          <UPageCard
             v-for="(feature, index) in features"
             :key="feature.title"
-            class="fade-up rounded-2xl border border-[var(--landing-border)] bg-[var(--landing-surface-soft)] p-6 shadow-sm backdrop-blur"
+            class="fade-up shadow-sm backdrop-blur"
             :style="{ animationDelay: `${index * 0.06}s` }"
+            spotlight
           >
             <span
               class="flex size-11 items-center justify-center rounded-xl bg-[var(--landing-accent-soft)] text-[var(--landing-accent)]"
@@ -311,7 +295,7 @@
             <p class="mt-2 text-sm text-[var(--landing-muted)]">
               {{ feature.description }}
             </p>
-          </div>
+          </UPageCard>
         </div>
       </UContainer>
     </section>
@@ -332,11 +316,11 @@
             </p>
           </div>
 
-          <ol class="grid gap-6">
-            <li
+          <div class="grid gap-6">
+            <UPageCard
               v-for="(step, index) in steps"
               :key="step.title"
-              class="rounded-2xl border border-[var(--landing-border)] bg-[var(--landing-surface-soft)] p-6 shadow-sm"
+              class="shadow-sm"
             >
               <div class="flex items-center gap-3">
                 <span
@@ -351,8 +335,8 @@
               <p class="mt-3 text-sm text-[var(--landing-muted)]">
                 {{ step.description }}
               </p>
-            </li>
-          </ol>
+            </UPageCard>
+          </div>
         </div>
       </UContainer>
     </section>
@@ -360,7 +344,7 @@
     <section id="insights" class="py-16 sm:py-20" aria-labelledby="insights-title">
       <UContainer>
         <div class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-          <div class="rounded-3xl border border-[var(--landing-border)] bg-[var(--landing-surface)] p-8 shadow-lg">
+          <UPageCard class="bg-[var(--landing-surface)] shadow-lg">
             <p class="text-xs font-semibold uppercase tracking-[0.35em] text-[var(--landing-accent)]">
               Insights
             </p>
@@ -386,13 +370,13 @@
                 </p>
               </div>
             </div>
-          </div>
+          </UPageCard>
 
           <div class="space-y-6">
-            <div
+            <UPageCard
               v-for="testimonial in testimonials"
               :key="testimonial.name"
-              class="rounded-2xl border border-[var(--landing-border)] bg-[var(--landing-surface-soft)] p-6 shadow-sm"
+              class="shadow-sm"
             >
               <p class="text-sm text-[var(--landing-ink)]">
                 &quot;{{ testimonial.quote }}&quot;
@@ -403,7 +387,7 @@
               <div class="text-xs text-[var(--landing-muted)]">
                 {{ testimonial.role }}
               </div>
-            </div>
+            </UPageCard>
           </div>
         </div>
       </UContainer>
@@ -424,11 +408,11 @@
         </div>
 
         <div class="mt-10 grid gap-6 lg:grid-cols-2">
-          <div
+          <UPageCard
             v-for="plan in plans"
             :key="plan.name"
-            class="flex h-full flex-col rounded-3xl border p-8 shadow-sm"
-            :class="plan.highlight ? 'border-[var(--landing-accent)] bg-[var(--landing-surface-strong)]' : 'border-[var(--landing-border)] bg-[var(--landing-surface-soft)]'"
+            class="shadow-sm"
+            :highlight="plan.highlight"
           >
             <div class="flex items-center justify-between">
               <h3 class="text-xl font-semibold text-[var(--landing-ink)]">
@@ -457,14 +441,13 @@
             </ul>
 
             <UButton
-              class="mt-8"
-              size="lg"
+              class="mt-8 w-fit"
               to="/login"
-              :class="plan.highlight ? '!bg-[var(--landing-accent)] !text-white hover:!bg-[var(--landing-accent-strong)]' : ''"
+              :variant="plan.highlight ? 'solid' : 'soft'"
             >
               {{ plan.cta }}
             </UButton>
-          </div>
+          </UPageCard>
         </div>
       </UContainer>
     </section>
@@ -484,10 +467,10 @@
         </div>
 
         <dl class="mt-10 grid gap-6 lg:grid-cols-2">
-          <div
+          <UPageCard
             v-for="faq in faqs"
             :key="faq.question"
-            class="rounded-2xl border border-[var(--landing-border)] bg-[var(--landing-surface-soft)] p-6 shadow-sm"
+            class="shadow-sm"
           >
             <dt class="text-base font-semibold text-[var(--landing-ink)]">
               {{ faq.question }}
@@ -495,14 +478,14 @@
             <dd class="mt-2 text-sm text-[var(--landing-muted)]">
               {{ faq.answer }}
             </dd>
-          </div>
+          </UPageCard>
         </dl>
       </UContainer>
     </section>
 
     <section class="pb-20" aria-labelledby="cta-title">
       <UContainer>
-        <div class="relative overflow-hidden rounded-3xl border border-[var(--landing-border)] bg-[var(--landing-surface)] p-10">
+        <UPageCard class="relative overflow-hidden rounded-3xl p-4">
           <div class="pointer-events-none absolute -right-16 -top-20 h-48 w-48 rounded-full bg-[var(--landing-accent)] opacity-20 blur-3xl" />
           <div class="pointer-events-none absolute -bottom-16 left-0 h-48 w-48 rounded-full bg-[var(--landing-highlight)] opacity-20 blur-3xl" />
 
@@ -520,24 +503,15 @@
             </div>
 
             <div class="flex flex-wrap gap-3">
-              <UButton
-                size="lg"
-                to="/login"
-                class="!bg-[var(--landing-accent)] !text-white hover:!bg-[var(--landing-accent-strong)]"
-              >
+              <UButton to="/login">
                 Start free trial
               </UButton>
-              <UButton
-                size="lg"
-                variant="outline"
-                to="/login"
-                class="border-[var(--landing-border)]"
-              >
+              <UButton variant="outline" to="/login">
                 Book a demo
               </UButton>
             </div>
           </div>
-        </div>
+        </UPageCard>
       </UContainer>
     </section>
   </div>
