@@ -1,46 +1,98 @@
 <script setup lang="ts">
-  import type { TabsItem } from '#ui/components/Tabs.vue'
-  import LoginForm from '~/components/LoginForm.vue'
+  import * as v from 'valibot'
+  import type { FormSubmitEvent } from '@nuxt/ui'
 
-  setPageLayout('empty')
+  const schema = v.object({
+    email: v.pipe(v.string(), v.email('Invalid email')),
+    password: v.pipe(v.string(), v.minLength(8, 'Must be at least 8 characters'))
+  })
 
-  const items: TabsItem = [
-    {
-      label: 'Login',
-      slot: 'login'
-    },
-    {
-      label: 'Sign up',
-      slot: 'signup'
-    }
-  ]
+  type Schema = v.InferOutput<typeof schema>
+
+  const state = reactive({
+    email: '',
+    password: ''
+  })
+
+  const showPassword = ref(false)
+
+  const toast = useToast()
+  async function onSubmit(event: FormSubmitEvent<Schema>) {
+    toast.add({ title: 'Success', description: 'The form has been submitted.', color: 'success' })
+    console.log(event.data)
+  }
 </script>
 
 <template>
-  <div class="h-screen">
-    <div class="grid grid-cols-[1fr_auto] h-full">
-      <section class="bg-accented" />
+  <div class="h-screen flex justify-center items-center">
+    <UPageCard class="min-w-md max-w-md p-4 shadow-2xl" variant="subtle">
+      <div class="space-y-8">
+        <section class="text-center justify-center space-y-6">
+          <div class="flex justify-center">
+            <AppLogo class="cursor-pointer" @click="navigateTo('/')" />
+          </div>
 
-      <section class="p-32">
-        <div class="mx-auto w-md space-y-8">
-          <h1 class="text-4xl">
-            Create an account
-          </h1>
+          <div>
+            <h1 class="text-2xl font-bold">
+              Welcome back
+            </h1>
+            <span class="text-muted text-sm">Securely manage your asserts and future.</span>
+          </div>
+        </section>
 
-          <UTabs :items="items" variant="link">
-            <template #login>
-              <div class="pt-4 px-2">
-                <LoginForm />
-              </div>
-            </template>
+        <UForm
+          :schema="schema"
+          :state="state"
+          class="space-y-6 w-full"
+          @submit="onSubmit"
+        >
+          <UFormField label="Email" name="email">
+            <UInput v-model="state.email" class="w-full" variant="subtle" />
+          </UFormField>
 
-            <template #signup>
-              Signup...
-            </template>
-          </UTabs>
+          <PasswordFormField
+            v-model="state.password"
+            label="Password"
+            name="password"
+          />
+
+          <UButton
+            type="submit"
+            class="items-center"
+            block
+          >
+            Login <UIcon name="i-lucide-arrow-right" />
+          </UButton>
+        </UForm>
+
+        <USeparator label="Or continue with" :ui="{ container: 'text-muted' }" />
+
+        <div class="flex justify-center gap-3">
+          <UButton
+            icon="i-logos-google-icon"
+            variant="subtle"
+            color="neutral"
+            block
+          >
+            Google
+          </UButton>
+          <UButton
+            variant="subtle"
+            color="neutral"
+            block
+          >
+            <UIcon name="i-ic-baseline-apple" class="size-5 text-white" />
+            Apple
+          </UButton>
         </div>
-      </section>
-    </div>
+
+        <div class="text-center text-sm text-muted mt-12">
+          <span>
+            Don't have an account? <NuxtLink to="/signup" class="text-primary font-medium hover:underline cursor-pointer">Sign up</NuxtLink>
+          </span>
+        </div>
+      </div>
+    </UPageCard>
   </div>
 </template>
 

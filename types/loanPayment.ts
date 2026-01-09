@@ -1,3 +1,5 @@
+import type { ObjectId } from './index'
+
 export type LoanPaymentStatus = 'pending' | 'paid'
 
 export interface LoanPayment {
