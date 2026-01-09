@@ -33,7 +33,7 @@
           </div>
 
           <div>
-            <h1 class="text-3xl font-bold">
+            <h1 class="text-2xl font-bold">
               Welcome back
             </h1>
             <span class="text-muted text-sm">Securely manage your asserts and future.</span>
@@ -50,34 +50,11 @@
             <UInput v-model="state.email" class="w-full" variant="subtle" />
           </UFormField>
 
-          <UFormField
+          <PasswordFormField
+            v-model="state.password"
             label="Password"
             name="password"
-            hint="Forgot password?"
-            :ui="{ hint: 'text-primary font-medium cursor-pointer hover:underline' }"
-            @click.
-          >
-            <UInput
-              v-model="state.password"
-              class="w-full"
-              :type="showPassword ? 'text' : 'password'"
-              :ui="{ trailing: 'pe-1' }"
-              variant="subtle"
-            >
-              <template #trailing>
-                <UButton
-                  color="neutral"
-                  variant="link"
-                  size="sm"
-                  :icon="showPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-                  :aria-label="showPassword ? 'Hide password' : 'Show password'"
-                  :aria-pressed="showPassword"
-                  aria-controls="password"
-                  @click="showPassword = !showPassword"
-                />
-              </template>
-            </UInput>
-          </UFormField>
+          />
 
           <UButton
             type="submit"
@@ -109,9 +86,9 @@
           </UButton>
         </div>
 
-        <div class="text-center text-sm text-muted">
+        <div class="text-center text-sm text-muted mt-12">
           <span>
-            Don't have an account? <NuxtLink class="text-primary font-medium hover:underline cursor-pointer">Sign up</NuxtLink>
+            Don't have an account? <NuxtLink to="/signup" class="text-primary font-medium hover:underline cursor-pointer">Sign up</NuxtLink>
           </span>
         </div>
       </div>
