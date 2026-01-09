@@ -1,3 +1,5 @@
+import type { ObjectId } from './index'
+
 export type GoalStatus = 'active' | 'completed'
 
 export interface Goal {
