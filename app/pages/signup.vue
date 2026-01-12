@@ -37,8 +37,15 @@
 </script>
 
 <template>
-  <div class="h-screen flex flex-col gap-8 justify-center items-center">
-    <UPageCard class="min-w-md max-w-md p-4 shadow-2xl" variant="subtle">
+  <UContainer class="h-screen flex flex-col gap-8 justify-center items-center">
+    <UButton
+      icon="i-lucide-chevron-left"
+      class="absolute top-8 left-8"
+      variant="subtle"
+      to="/"
+    />
+
+    <UPageCard class="max-w-md p-4 shadow-2xl" variant="subtle">
       <div class="space-y-8">
         <section class="text-center justify-center space-y-6">
           <div class="flex justify-center">
@@ -102,7 +109,7 @@
         By signing up, you agree to our <NuxtLink to="/terms-of-service" class="text-primary font-medium hover:underline cursor-pointer">Terms of Service</NuxtLink> and <NuxtLink to="/privacy-policy" class="text-primary font-medium hover:underline cursor-pointer">Privacy Policy</NuxtLink>
       </span>
     </div>
-  </div>
+  </UContainer>
 </template>
 
 <style scoped>

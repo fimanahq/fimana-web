@@ -1,5 +1,5 @@
 <template>
-  <div class="landing-shell min-h-screen text-[var(--landing-ink)]">
+  <div class="bg-white dark:bg-[var(--ui-color-neutral-950)]/50 min-h-screen text-[var(--landing-ink)]">
     <LandingHeader />
     <UMain>
       <slot />

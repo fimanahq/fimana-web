@@ -149,7 +149,7 @@
               <span class="rounded-full bg-[var(--landing-accent-soft)] px-3 py-1 text-[var(--landing-accent)]">
                 Finance clarity
               </span>
-              <span class="text-[var(--landing-muted)]">Built for real life</span>
+              <span class="text-muted">Built for real life</span>
             </div>
 
             <h1
@@ -159,7 +159,7 @@
               Run your finances with a clear view of spending, bills, and savings.
             </h1>
 
-            <p class="fade-up fade-up-delay-1 text-lg text-[var(--landing-muted)] sm:text-xl">
+            <p class="fade-up fade-up-delay-1 text-lg text-muted sm:text-xl">
               FiMana is Financial Management built for individuals. Track spending, stay on budget,
               and grow savings with a simple daily dashboard.
             </p>
@@ -173,7 +173,7 @@
               </UButton>
             </div>
 
-            <div class="fade-up fade-up-delay-3 flex flex-wrap gap-4 text-sm text-[var(--landing-muted)]">
+            <div class="fade-up fade-up-delay-3 flex flex-wrap gap-4 text-sm text-muted">
               <div v-for="item in highlights" :key="item" class="flex items-center gap-2">
                 <UIcon name="i-lucide-check" class="size-4 text-[var(--landing-accent)]" />
                 <span>{{ item }}</span>
@@ -182,12 +182,13 @@
           </div>
 
           <div class="relative">
-            <div
-              class="fade-up rounded-3xl border border-[var(--landing-border)] bg-[var(--landing-surface)] p-6 shadow-2xl backdrop-blur"
+            <UPageCard
+              variant="subtle"
+              class="fade-up shadow-2xl p-1"
             >
               <div class="flex items-center justify-between">
                 <div>
-                  <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--landing-muted)]">
+                  <p class="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
                     Available cash
                   </p>
                   <p class="mt-2 text-3xl font-semibold text-[var(--landing-ink)]">
@@ -199,9 +200,9 @@
                 </span>
               </div>
 
-              <div class="mt-6 rounded-2xl border border-[var(--landing-border)] bg-[var(--landing-surface)] p-4">
+              <UPageCard variant="subtle" class="mt-2">
                 <div class="flex items-center justify-between text-sm">
-                  <span class="text-[var(--landing-muted)]">Cashflow this month</span>
+                  <span class="text-muted">Cashflow this month</span>
                   <span class="font-semibold text-[var(--landing-ink)]">$38,920</span>
                 </div>
                 <div class="mt-4 flex items-end gap-2">
@@ -212,39 +213,42 @@
                   <div class="h-16 w-3 rounded-full bg-[var(--landing-highlight)]" />
                   <div class="h-14 w-3 rounded-full bg-[var(--landing-accent-soft)]" />
                 </div>
-              </div>
+              </UPageCard>
 
-              <div class="mt-6 grid gap-4 sm:grid-cols-2">
-                <div class="rounded-2xl border border-[var(--landing-border)] bg-[var(--landing-surface-soft)] p-4">
-                  <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--landing-muted)]">
+              <div class="mt-2 grid gap-4 sm:grid-cols-2">
+                <UPageCard variant="subtle">
+                  <p class="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
                     Runway
                   </p>
                   <p class="mt-2 text-xl font-semibold text-[var(--landing-ink)]">
                     14.2 months
                   </p>
-                  <p class="mt-1 text-xs text-[var(--landing-muted)]">
+                  <p class="mt-1 text-xs text-muted">
                     Based on current burn rate
                   </p>
-                </div>
-                <div class="rounded-2xl border border-[var(--landing-border)] bg-[var(--landing-surface-soft)] p-4">
-                  <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--landing-muted)]">
+                </UPageCard>
+
+                <UPageCard variant="subtle">
+                  <p class="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
                     Next invoice
                   </p>
                   <p class="mt-2 text-xl font-semibold text-[var(--landing-ink)]">
                     $7,840
                   </p>
-                  <p class="mt-1 text-xs text-[var(--landing-muted)]">
+                  <p class="mt-1 text-xs text-muted">
                     Due in 5 days
                   </p>
-                </div>
+                </UPageCard>
               </div>
-            </div>
+            </UPageCard>
 
-            <div
-              class="absolute -bottom-6 left-8 hidden rounded-2xl border border-[var(--landing-border)] bg-[var(--landing-surface)] px-4 py-3 text-xs text-[var(--landing-muted)] shadow-lg lg:block"
+            <UPageCard
+              variant="subtle"
+              class="absolute -bottom-6 left-8 hidden text-xs text-muted shadow-lg lg:block"
+              :ui="{ container: 'sm:py-3 sm:px-4' }"
             >
               Weekly report delivered every Monday at 8:00 AM
-            </div>
+            </UPageCard>
           </div>
         </div>
       </UContainer>
@@ -252,7 +256,7 @@
 
     <section class="py-10">
       <UContainer class="flex flex-wrap items-center justify-between gap-6">
-        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-[var(--landing-muted)]">
+        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-muted">
           Trusted by everyday people
         </p>
         <div class="flex flex-wrap gap-6 text-sm font-semibold text-[var(--landing-ink)] opacity-70">
@@ -270,7 +274,7 @@
           <h2 id="features-title" class="text-3xl font-semibold text-[var(--landing-ink)] sm:text-4xl">
             A smarter way to stay ahead of every dollar.
           </h2>
-          <p class="text-[var(--landing-muted)]">
+          <p class="text-muted">
             Replace scattered spreadsheets with a single command center for budgets, bills,
             and savings.
           </p>
@@ -292,7 +296,7 @@
             <h3 class="mt-4 text-lg font-semibold text-[var(--landing-ink)]">
               {{ feature.title }}
             </h3>
-            <p class="mt-2 text-sm text-[var(--landing-muted)]">
+            <p class="mt-2 text-sm text-muted">
               {{ feature.description }}
             </p>
           </UPageCard>
@@ -310,7 +314,7 @@
             <h2 id="workflow-title" class="text-3xl font-semibold text-[var(--landing-ink)] sm:text-4xl">
               Built for daily money decisions, not more admin.
             </h2>
-            <p class="text-[var(--landing-muted)]">
+            <p class="text-muted">
               Get the visibility you need without extra effort. Every transaction is captured,
               summarized, and ready for review.
             </p>
@@ -332,7 +336,7 @@
                   {{ step.title }}
                 </h3>
               </div>
-              <p class="mt-3 text-sm text-[var(--landing-muted)]">
+              <p class="mt-3 text-sm text-muted">
                 {{ step.description }}
               </p>
             </UPageCard>
@@ -344,31 +348,31 @@
     <section id="insights" class="py-16 sm:py-20" aria-labelledby="insights-title">
       <UContainer>
         <div class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-          <UPageCard class="bg-[var(--landing-surface)] shadow-lg">
+          <UPageCard class="shadow-lg">
             <p class="text-xs font-semibold uppercase tracking-[0.35em] text-[var(--landing-accent)]">
               Insights
             </p>
             <h2 id="insights-title" class="mt-4 text-3xl font-semibold text-[var(--landing-ink)] sm:text-4xl">
               Weekly clarity delivered to you.
             </h2>
-            <p class="mt-4 text-[var(--landing-muted)]">
+            <p class="mt-4 text-muted">
               FiMana sends a weekly digest with spend, goals, and upcoming bills so you stay
               confident without extra effort.
             </p>
 
             <div class="mt-8 grid gap-4 sm:grid-cols-3">
-              <div
+              <UPageCard
                 v-for="stat in insights"
                 :key="stat.label"
-                class="rounded-2xl border border-[var(--landing-border)] bg-[var(--landing-surface)] p-4 text-center"
+                class="text-center"
               >
                 <p class="text-2xl font-semibold text-[var(--landing-ink)]">
                   {{ stat.value }}
                 </p>
-                <p class="mt-2 text-xs text-[var(--landing-muted)]">
+                <p class="mt-2 text-xs text-muted">
                   {{ stat.label }}
                 </p>
-              </div>
+              </UPageCard>
             </div>
           </UPageCard>
 
@@ -381,10 +385,10 @@
               <p class="text-sm text-[var(--landing-ink)]">
                 &quot;{{ testimonial.quote }}&quot;
               </p>
-              <div class="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--landing-muted)]">
+              <div class="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted">
                 {{ testimonial.name }}
               </div>
-              <div class="text-xs text-[var(--landing-muted)]">
+              <div class="text-xs text-muted">
                 {{ testimonial.role }}
               </div>
             </UPageCard>
@@ -402,7 +406,7 @@
           <h2 id="pricing-title" class="text-3xl font-semibold text-[var(--landing-ink)] sm:text-4xl">
             Plans that grow with your financial goals.
           </h2>
-          <p class="text-[var(--landing-muted)]">
+          <p class="text-muted">
             Start simple and add proactive reminders when you are ready.
           </p>
         </div>
@@ -427,9 +431,9 @@
             </div>
             <p class="mt-4 text-4xl font-semibold text-[var(--landing-ink)]">
               {{ plan.price }}
-              <span class="text-sm font-normal text-[var(--landing-muted)]">{{ plan.period }}</span>
+              <span class="text-sm font-normal text-muted">{{ plan.period }}</span>
             </p>
-            <p class="mt-3 text-sm text-[var(--landing-muted)]">
+            <p class="mt-3 text-sm text-muted">
               {{ plan.description }}
             </p>
 
@@ -461,7 +465,7 @@
           <h2 id="faq-title" class="text-3xl font-semibold text-[var(--landing-ink)] sm:text-4xl">
             Answers for the most common questions.
           </h2>
-          <p class="text-[var(--landing-muted)]">
+          <p class="text-muted">
             Still have questions? Reach out for a quick walkthrough.
           </p>
         </div>
@@ -475,7 +479,7 @@
             <dt class="text-base font-semibold text-[var(--landing-ink)]">
               {{ faq.question }}
             </dt>
-            <dd class="mt-2 text-sm text-[var(--landing-muted)]">
+            <dd class="mt-2 text-sm text-muted">
               {{ faq.answer }}
             </dd>
           </UPageCard>
@@ -497,7 +501,7 @@
               <h2 id="cta-title" class="text-3xl font-semibold text-[var(--landing-ink)] sm:text-4xl">
                 Ready to make your money feel simpler?
               </h2>
-              <p class="text-[var(--landing-muted)]">
+              <p class="text-muted">
                 Start a free trial today and see your dashboard in less than 10 minutes.
               </p>
             </div>

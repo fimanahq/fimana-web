@@ -14,8 +14,6 @@
     password: ''
   })
 
-  const showPassword = ref(false)
-
   const toast = useToast()
   async function onSubmit(event: FormSubmitEvent<Schema>) {
     toast.add({ title: 'Success', description: 'The form has been submitted.', color: 'success' })
@@ -24,8 +22,15 @@
 </script>
 
 <template>
-  <div class="h-screen flex justify-center items-center">
-    <UPageCard class="min-w-md max-w-md p-4 shadow-2xl" variant="subtle">
+  <UContainer class="h-screen flex flex-col gap-8 md:justify-center items-center">
+    <UButton
+      icon="i-lucide-chevron-left"
+      class="md:absolute md:top-8 md:left-8 md:mt-0 mt-4 mr-auto"
+      variant="subtle"
+      to="/"
+    />
+
+    <UPageCard class="w-full max-w-md p-4 shadow-2xl" variant="subtle">
       <div class="space-y-8">
         <section class="text-center justify-center space-y-6">
           <div class="flex justify-center">
@@ -81,7 +86,7 @@
             color="neutral"
             block
           >
-            <UIcon name="i-ic-baseline-apple" class="size-5 text-white" />
+            <UIcon name="i-ic-baseline-apple" class="size-5 dark:text-white light:text-black" />
             Apple
           </UButton>
         </div>
@@ -93,7 +98,7 @@
         </div>
       </div>
     </UPageCard>
-  </div>
+  </UContainer>
 </template>
 
 <style scoped>
