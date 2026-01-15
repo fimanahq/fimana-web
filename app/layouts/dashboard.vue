@@ -1,97 +1,125 @@
 <script setup lang="ts">
+  import type { NavigationMenuItem } from '@nuxt/ui'
+
   const route = useRoute()
-  const isSidebarCollapsed = ref(false)
 
-  const items = [
-    { label: 'Overview', to: '/dashboard', icon: 'i-lucide-layout-dashboard' },
-    { label: 'Accounts', to: '/accounts', icon: 'i-lucide-wallet' },
-    { label: 'Budgets', to: '/budgets', icon: 'i-lucide-pie-chart' },
-    { label: 'Categories', to: '/categories', icon: 'i-lucide-tags' },
-    { label: 'Goals', to: '/goals', icon: 'i-lucide-target' },
-    { label: 'Loans', to: '/loans', icon: 'i-lucide-handshake' },
-    { label: 'Transactions', to: '/transactions', icon: 'i-lucide-arrow-left-right' },
-    { label: 'Settings', to: '/settings', icon: 'i-lucide-settings' },
-    { label: 'Users', to: '/users', icon: 'i-lucide-users' }
-  ]
+  const open = ref(false)
+  const collapsed = ref(false)
 
-  const isActiveRoute = (to: string) => {
-    const [path, hash] = to.split('#')
-    if (route.path !== path) {
-      return false
-    }
-    if (!hash) {
-      return true
-    }
-    return route.hash === `#${hash}`
-  }
+  const openSelect = () => open.value = false
+
+  const links = [
+    [
+      { label: 'Overview', to: '/dashboard', icon: 'i-lucide-layout-dashboard', onSelect: openSelect },
+      { label: 'Accounts', to: '/accounts', icon: 'i-lucide-wallet', onSelect: openSelect },
+      { label: 'Budgets', to: '/budgets', icon: 'i-lucide-pie-chart', onSelect: openSelect },
+      { label: 'Categories', to: '/categories', icon: 'i-lucide-tags', onSelect: openSelect },
+      { label: 'Goals', to: '/goals', icon: 'i-lucide-target', onSelect: openSelect },
+      { label: 'Loans', to: '/loans', icon: 'i-lucide-handshake', onSelect: openSelect },
+      { label: 'Transactions', to: '/transactions', icon: 'i-lucide-arrow-left-right', onSelect: openSelect },
+      { label: 'Settings', to: '/settings', icon: 'i-lucide-settings', onSelect: openSelect },
+      { label: 'Users', to: '/users', icon: 'i-lucide-users', onSelect: openSelect }
+    ],
+    [
+      {
+        label: 'Feedback',
+        icon: 'i-lucide-message-circle',
+        to: 'https://github.com/nuxt-ui-templates/dashboard',
+        target: '_blank'
+      },
+      {
+        label: 'Help & Support',
+        icon: 'i-lucide-info',
+        to: 'https://github.com/nuxt-ui-templates/dashboard',
+        target: '_blank'
+      }
+    ]
+  ] satisfies NavigationMenuItem[][]
+
+  const groups = computed(() => [
+    {
+      id: 'links',
+      label: 'Go to',
+      items: links.flat()
+    },
+    {
+      id: 'code',
+      label: 'Code',
+      items: [
+        {
+          id: 'source',
+          label: 'View page source',
+          icon: 'i-simple-icons-github',
+          to: `https://github.com/nuxt-ui-templates/dashboard/blob/main/app/pages${route.path === '/' ? '/index' : route.path}.vue`,
+          target: '_blank'
+        }
+      ]
+    }])
 </script>
 
 <template>
-  <div class="dashboard-shell min-h-screen text-[var(--dashboard-ink)]">
-    <div class="flex min-h-screen flex-col md:flex-row">
-      <aside
-        class="dashboard-sidebar w-full border-b border-[var(--dashboard-border)] bg-[var(--dashboard-surface-strong)] md:sticky md:top-0 md:h-screen md:border-b-0 md:border-r"
-        :class="isSidebarCollapsed ? 'md:w-20' : 'md:w-64'"
-      >
-        <div class="flex h-full flex-col gap-6 px-4 py-6">
-          <div class="flex items-center justify-between gap-3">
-            <NuxtLink to="/" class="flex items-center gap-3">
-              <span class="flex size-10 items-center justify-center rounded-xl bg-[var(--dashboard-accent-soft)] text-[var(--dashboard-accent-strong)]">
-                <UIcon name="i-lucide-wallet-minimal" class="size-5" />
-              </span>
-              <span class="sidebar-brand-text text-base font-semibold text-[var(--dashboard-ink)]">
-                FiMana
-              </span>
-            </NuxtLink>
-
-            <UButton
-              class="hidden md:inline-flex"
-              variant="ghost"
-              :icon="isSidebarCollapsed ? 'i-lucide-chevrons-right' : 'i-lucide-chevrons-left'"
-              :aria-label="isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
-              @click="isSidebarCollapsed = !isSidebarCollapsed"
+  <UDashboardGroup unit="rem">
+    <UDashboardSidebar
+      id="default"
+      v-model:collapsed="collapsed"
+      collapsible
+      :class="collapsed ? 'bg-base' : 'bg-elevated/25'"
+      class="duration-150 ease-in-out"
+      :ui="{
+        root: 'transition-[width,min-width] duration-150 ease-in-out overflow-x-hidden',
+        header: 'duration-auto px-[calc(0.875rem-1px)]',
+        body: 'duration-auto px-[calc(0.875rem-1px)] overflow-x-hidden',
+        footer: 'duration-auto px-[calc(0.875rem-1px)]'
+      }"
+    >
+      <template #header="{ collapsed }">
+        <div class="flex justify-between w-full">
+          <div class="relative group">
+            <AppLogo :collapsed="collapsed" />
+            <UDashboardSidebarCollapse
+              v-if="collapsed"
+              class="text-dimmed absolute inset-0 opacity-0 hidden group-hover:flex group-hover:opacity-100 items-center justify-center"
             />
           </div>
 
-          <nav class="flex flex-1 flex-col gap-2">
-            <NuxtLink
-              v-for="item in items"
-              :key="item.label"
-              :to="item.to"
-              class="sidebar-link group flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition"
-              :class="isActiveRoute(item.to) ? 'sidebar-link-active' : 'sidebar-link-idle'"
-              :title="item.label"
-            >
-              <span class="sidebar-icon flex size-9 items-center justify-center rounded-xl bg-[var(--dashboard-surface-soft)] text-[var(--dashboard-muted)]">
-                <UIcon :name="item.icon" class="size-4" />
-              </span>
-              <span class="sidebar-label text-[var(--dashboard-ink)]">
-                {{ item.label }}
-              </span>
-            </NuxtLink>
-          </nav>
-
-          <div class="sidebar-details rounded-2xl border border-[var(--dashboard-border)] bg-[var(--dashboard-surface)] p-3 text-xs text-[var(--dashboard-muted)]">
-            <p class="font-semibold text-[var(--dashboard-ink)]">
-              Personal plan
-            </p>
-            <p class="mt-1">
-              12 days left in trial
-            </p>
-            <UButton class="mt-3 w-full" size="xs" variant="soft">
-              Upgrade
-            </UButton>
-          </div>
+          <UDashboardSidebarCollapse
+            class="duration-150 ease-in-out text-dimmed"
+            :class="collapsed ? 'opacity-0 pointer-events-none' : 'opacity-100'"
+          />
         </div>
-      </aside>
+      </template>
 
-      <div class="flex min-h-screen flex-1 flex-col">
-        <UMain>
-          <slot />
-        </UMain>
-      </div>
-    </div>
-  </div>
+      <template #default="{ collapsed }">
+        <UDashboardSearchButton :collapsed="collapsed" class="bg-transparent ring-default" />
+
+        <UNavigationMenu
+          :collapsed="collapsed"
+          :items="links[0]"
+          orientation="vertical"
+          tooltip
+          popover
+        />
+
+        <UNavigationMenu
+          :collapsed="collapsed"
+          :items="links[1]"
+          orientation="vertical"
+          tooltip
+          class="mt-auto"
+        />
+      </template>
+
+      <template #footer="{ collapsed }">
+        <UserMenu :collapsed="collapsed" />
+      </template>
+    </UDashboardSidebar>
+
+    <UDashboardSearch :groups="groups" />
+
+    <slot />
+
+    <NotificationsSlideover />
+  </UDashboardGroup>
 </template>
 
 <style scoped>
@@ -110,8 +138,8 @@
   --dashboard-surface-soft: rgba(248, 250, 252, 0.8);
   --dashboard-border: rgba(15, 23, 42, 0.08);
   --dashboard-bg: radial-gradient(1200px 640px at 12% -10%, rgba(20, 184, 166, 0.2) 0%, rgba(20, 184, 166, 0) 60%),
-    radial-gradient(900px 520px at 82% 4%, rgba(251, 146, 60, 0.16) 0%, rgba(251, 146, 60, 0) 55%),
-    #f8fafc;
+  radial-gradient(900px 520px at 82% 4%, rgba(251, 146, 60, 0.16) 0%, rgba(251, 146, 60, 0) 55%),
+  #f8fafc;
 }
 
 :global(.dark) {
@@ -129,8 +157,8 @@
   --dashboard-surface-soft: rgba(15, 23, 42, 0.7);
   --dashboard-border: rgba(148, 163, 184, 0.18);
   --dashboard-bg: radial-gradient(1200px 640px at 12% -10%, rgba(45, 212, 191, 0.16) 0%, rgba(45, 212, 191, 0) 60%),
-    radial-gradient(900px 520px at 82% 4%, rgba(251, 146, 60, 0.14) 0%, rgba(251, 146, 60, 0) 55%),
-    #0b1120;
+  radial-gradient(900px 520px at 82% 4%, rgba(251, 146, 60, 0.14) 0%, rgba(251, 146, 60, 0) 55%),
+  #0b1120;
 }
 
 .dashboard-shell {

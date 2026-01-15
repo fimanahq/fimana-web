@@ -45,7 +45,7 @@
       to="/"
     />
 
-    <UPageCard class="max-w-md p-4 shadow-2xl" variant="subtle">
+    <UPageCard class="w-full max-w-md p-4 shadow-2xl" variant="subtle">
       <div class="space-y-8">
         <section class="text-center justify-center space-y-6">
           <div class="flex justify-center">

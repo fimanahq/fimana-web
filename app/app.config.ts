@@ -31,6 +31,36 @@ export default defineAppConfig({
       slots: {
         root: 'rounded-xl'
       }
+    },
+    navigationMenu: {
+      variants: {
+        orientation: {
+          vertical: {
+            link: 'py-2 px-3'
+          }
+        }
+      },
+      compoundVariants: [
+        {
+          orientation: 'vertical',
+          collapsed: true,
+          class: {
+            link: 'justify-center w-9 h-9'
+          }
+        }
+      ]
+    },
+    dashboardSearchButton: {
+      slots: {
+        base: 'min-h-9 min-w-9'
+      },
+      variants: {
+        collapsed: {
+          true: {
+            trailing: 'justify-center w-9 h-9'
+          }
+        }
+      }
     }
   }
 })
