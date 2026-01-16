@@ -63,7 +63,7 @@
       id="default"
       v-model:collapsed="collapsed"
       collapsible
-      :class="collapsed ? 'bg-base' : 'bg-elevated/25'"
+      :class="collapsed ? 'bg-base' : ''"
       class="duration-150 ease-in-out"
       :ui="{
         root: 'transition-[width,min-width] duration-150 ease-in-out overflow-x-hidden',

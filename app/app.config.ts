@@ -1,8 +1,8 @@
 export default defineAppConfig({
   ui: {
     colors: {
-      primary: 'teal',
-      neutral: 'zinc'
+      primary: 'brand',
+      neutral: 'neutral'
     },
     input: {
       defaultVariants: {
@@ -30,6 +30,16 @@ export default defineAppConfig({
     pageCard: {
       slots: {
         root: 'rounded-xl'
+      },
+      // variants: {
+      //   variant: {
+      //     subtle: {
+      //       root: 'bg-primary/5 dark:bg-primary/5'
+      //     }
+      //   }
+      // },
+      defaultVariants: {
+        variant: 'subtle'
       }
     },
     navigationMenu: {
