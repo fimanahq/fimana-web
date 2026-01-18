@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import type { Account } from '~/types/account'
+  import type { Account } from '~~/types/account'
 
   definePageMeta({
     layout: 'dashboard'
@@ -93,13 +93,13 @@
     value.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 
   const balanceTone = (value: number) =>
-    value < 0 ? 'text-[var(--dashboard-negative)]' : 'text-[var(--dashboard-ink)]'
+    value < 0 ? 'text-error' : ''
 </script>
 
 <template>
-  <section class="pb-16 pt-10">
-    <UContainer>
-      <div class="flex flex-col gap-8">
+  <UDashboardPanel>
+    <template #body>
+      <div class="flex flex-col gap-10">
         <DashboardHeader
           page="Accounts"
           title="Cash and bank balances"
@@ -114,50 +114,35 @@
         </DashboardHeader>
 
         <section class="grid gap-4 md:grid-cols-3">
-          <UPageCard class="dashboard-card">
-            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-muted)]">
-              Total balance
-            </p>
-            <p class="mt-4 text-2xl font-semibold text-[var(--dashboard-ink)]">
-              {{ formatCurrency(totalBalance) }}
-            </p>
-            <p class="mt-2 text-xs text-[var(--dashboard-muted)]">
-              Across {{ activeAccounts.length }} active accounts
-            </p>
-          </UPageCard>
+          <DashboardStatCard
+            :style="{ animationDelay: '0s' }"
+            title="Total balance"
+            :value="formatCurrency(totalBalance)"
+            :note="`Across ${activeAccounts.length} active accounts`"
+          />
 
-          <UPageCard class="dashboard-card">
-            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-muted)]">
-              Primary account
-            </p>
-            <p class="mt-4 text-2xl font-semibold text-[var(--dashboard-ink)]">
-              {{ topAccount?.name || 'No accounts' }}
-            </p>
-            <p class="mt-2 text-xs text-[var(--dashboard-muted)]">
-              {{ topAccount ? formatCurrency(topAccount.balance) : 'Add an account to start' }}
-            </p>
-          </UPageCard>
+          <DashboardStatCard
+            :style="{ animationDelay: '0.08s' }"
+            title="Primary account"
+            :value="topAccount?.name || 'No accounts'"
+            :note="`${topAccount ? formatCurrency(topAccount.balance) : 'Add an account to start'}`"
+          />
 
-          <UPageCard class="dashboard-card">
-            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-muted)]">
-              Archived accounts
-            </p>
-            <p class="mt-4 text-2xl font-semibold text-[var(--dashboard-ink)]">
-              {{ archivedCount }}
-            </p>
-            <p class="mt-2 text-xs text-[var(--dashboard-muted)]">
-              Hidden from daily totals
-            </p>
-          </UPageCard>
+          <DashboardStatCard
+            :style="{ animationDelay: '0.08s' }"
+            title="Archived accounts"
+            :value="archivedCount"
+            note="Hidden from daily totals"
+          />
         </section>
 
-        <UPageCard class="dashboard-card">
+        <UPageCard>
           <div class="flex items-center justify-between gap-3">
             <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-accent)]">
+              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
                 All accounts
               </p>
-              <p class="mt-2 text-sm text-[var(--dashboard-muted)]">
+              <p class="mt-2 text-sm text-muted">
                 Keep balances accurate for clean reporting.
               </p>
             </div>
@@ -166,23 +151,23 @@
             </UButton>
           </div>
 
-          <div class="mt-6 divide-y divide-[var(--dashboard-border)]">
+          <div class="mt-6 divide-y divide-default">
             <div
               v-for="account in accounts"
               :key="account._id"
               class="flex flex-wrap items-center justify-between gap-4 py-4 text-sm"
             >
               <div>
-                <p class="font-semibold text-[var(--dashboard-ink)]">
+                <p class="font-semibold">
                   {{ account.name }}
                 </p>
-                <p class="text-xs text-[var(--dashboard-muted)]">
+                <p class="text-xs text-muted">
                   {{ account.type.toUpperCase() }} - {{ account.currency }} - Created
                   {{ formatDate(account.createdAt) }}
                 </p>
               </div>
               <div class="flex items-center gap-3">
-                <span class="text-xs text-[var(--dashboard-muted)]">
+                <span class="text-xs text-muted">
                   {{ account.isArchived ? 'Archived' : 'Active' }}
                 </span>
                 <span :class="['text-sm font-semibold', balanceTone(account.balance)]">
@@ -193,6 +178,6 @@
           </div>
         </UPageCard>
       </div>
-    </UContainer>
-  </section>
+    </template>
+  </UDashboardPanel>
 </template>
