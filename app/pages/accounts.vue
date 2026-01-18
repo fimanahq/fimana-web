@@ -146,7 +146,7 @@
                 Keep balances accurate for clean reporting.
               </p>
             </div>
-            <UButton variant="ghost" size="xs">
+            <UButton variant="ghost" size="md">
               Manage
             </UButton>
           </div>

@@ -69,8 +69,8 @@
 </script>
 
 <template>
-  <section class="pb-16 pt-10">
-    <UContainer>
+  <UDashboardPanel>
+    <template #body>
       <div class="flex flex-col gap-8">
         <DashboardHeader
           page="Categories"
@@ -85,48 +85,46 @@
           </UButton>
         </DashboardHeader>
 
-        <UPageCard class="dashboard-card">
+        <UPageCard>
           <div class="flex items-center justify-between gap-3">
             <div>
               <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-accent)]">
                 Category library
               </p>
-              <p class="mt-2 text-sm text-[var(--dashboard-muted)]">
+              <p class="mt-2 text-sm text-muted">
                 System defaults plus your custom picks.
               </p>
             </div>
-            <UButton variant="ghost" size="xs">
+            <UButton variant="ghost" size="md">
               Manage
             </UButton>
           </div>
 
-          <div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            <div
-              v-for="category in categories"
-              :key="category._id"
-              class="flex items-center justify-between rounded-2xl border border-[var(--dashboard-border)] bg-[var(--dashboard-surface-soft)] p-4"
-            >
-              <div class="flex items-center gap-3">
-                <span
-                  class="flex size-10 items-center justify-center rounded-xl text-white"
-                  :style="{ backgroundColor: category.color }"
-                >
-                  <UIcon :name="category.icon" class="size-4" />
-                </span>
-                <div>
-                  <p class="text-sm font-semibold text-[var(--dashboard-ink)]">
-                    {{ category.name }}
-                  </p>
-                  <p class="text-xs text-[var(--dashboard-muted)]">
-                    {{ category.type }} - {{ category.isSystem ? 'System' : 'Custom' }}
-                  </p>
+          <div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            <UPageCard v-for="category in categories" :key="category._id">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <span
+                    class="flex size-10 items-center justify-center rounded-xl text-white"
+                    :style="{ backgroundColor: category.color }"
+                  >
+                    <UIcon :name="category.icon" class="size-4" />
+                  </span>
+                  <div>
+                    <p class="text-sm font-semibold">
+                      {{ category.name }}
+                    </p>
+                    <p class="text-xs text-muted">
+                      {{ category.type }} - {{ category.isSystem ? 'System' : 'Custom' }}
+                    </p>
+                  </div>
                 </div>
+                <UButton variant="ghost" size="md" icon="i-lucide-ellipsis" />
               </div>
-              <UButton variant="ghost" size="xs" icon="i-lucide-ellipsis" />
-            </div>
+            </UPageCard>
           </div>
         </UPageCard>
       </div>
-    </UContainer>
-  </section>
+    </template>
+  </UDashboardPanel>
 </template>

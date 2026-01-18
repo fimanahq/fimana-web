@@ -170,8 +170,8 @@
         </section>
 
         <div class="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-          <div>
-            <UPageCard>
+          <UPageCard>
+            <div>
               <div class="flex justify-between items-center gap-3">
                 <div>
                   <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
@@ -181,7 +181,7 @@
                     Compare recent monthly limits.
                   </p>
                 </div>
-                <UButton variant="ghost" size="xs">
+                <UButton variant="ghost" size="md">
                   View all
                 </UButton>
               </div>
@@ -210,8 +210,8 @@
                   </div>
                 </div>
               </div>
-            </UPageCard>
-          </div>
+            </div>
+          </UPageCard>
 
           <div>
             <UPageCard>
@@ -224,7 +224,7 @@
                     Current month limits by category.
                   </p>
                 </div>
-                <UButton variant="ghost" size="xs">
+                <UButton variant="ghost" size="md">
                   Edit
                 </UButton>
               </div>
