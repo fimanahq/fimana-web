@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
@@ -15,6 +14,11 @@ export default defineNuxtConfig({
   ],
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
+  runtimeConfig: {
+    public: {
+      apiUrl: process.env.NUXT_API_URL
+    }
+  },
   compatibilityDate: '2025-01-15',
   eslint: {
     config: {
