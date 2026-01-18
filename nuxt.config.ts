@@ -16,7 +16,7 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
     public: {
-      apiUrl: process.env.NUXT_API_URL
+      apiBase: process.env.NUXT_API_BASE
     }
   },
   compatibilityDate: '2025-01-15',
