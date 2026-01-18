@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import type { Goal } from '~/types/goal'
+  import type { Goal } from '~~/types/goal'
 
   definePageMeta({
     layout: 'dashboard'
@@ -55,8 +55,8 @@
 </script>
 
 <template>
-  <section class="pb-16 pt-10">
-    <UContainer>
+  <UDashboardPanel>
+    <template #body>
       <div class="flex flex-col gap-8">
         <DashboardHeader
           page="Goals"
@@ -72,33 +72,29 @@
         </DashboardHeader>
 
         <div class="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-          <UPageCard class="dashboard-card">
+          <UPageCard>
             <div class="flex items-center justify-between gap-3">
               <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-accent)]">
+                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
                   Active goals
                 </p>
-                <p class="mt-2 text-sm text-[var(--dashboard-muted)]">
+                <p class="mt-2 text-sm text-muted">
                   Funds reserved for milestones.
                 </p>
               </div>
-              <UButton variant="ghost" size="xs">
+              <UButton variant="ghost" size="md">
                 View all
               </UButton>
             </div>
 
             <div class="mt-6 space-y-4">
-              <div
-                v-for="goal in goals"
-                :key="goal._id"
-                class="rounded-2xl border border-[var(--dashboard-border)] bg-[var(--dashboard-surface-soft)] p-4"
-              >
+              <UPageCard v-for="goal in goals" :key="goal._id" variant="soft">
                 <div class="flex items-start justify-between gap-4">
                   <div>
-                    <p class="text-sm font-semibold text-[var(--dashboard-ink)]">
+                    <p class="text-sm font-semibold">
                       {{ goal.name }}
                     </p>
-                    <p class="text-xs text-[var(--dashboard-muted)]">
+                    <p class="text-xs text-muted">
                       Target {{ formatCurrency(goal.targetAmount) }} - due {{ formatDate(goal.deadline) }}
                     </p>
                   </div>
@@ -107,52 +103,54 @@
                   </UBadge>
                 </div>
 
-                <div class="mt-4 h-2 rounded-full bg-[var(--dashboard-border)]">
+                <div class="mt-4 h-2 rounded-full bg-elevated">
                   <div
-                    class="h-2 rounded-full bg-[var(--dashboard-highlight)]"
+                    class="h-2 rounded-full bg-secondary"
                     :style="{ width: `${progressPercent(goal)}%` }"
                   />
                 </div>
-                <div class="mt-2 flex items-center justify-between text-xs text-[var(--dashboard-muted)]">
+                <div class="mt-2 flex items-center justify-between text-xs text-muted">
                   <span>{{ formatCurrency(goal.currentAmount) }} saved</span>
                   <span>{{ progressPercent(goal) }}%</span>
                 </div>
-              </div>
+              </UPageCard>
             </div>
           </UPageCard>
 
-          <UPageCard class="dashboard-card">
-            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-accent)]">
-              Next action
-            </p>
-            <h2 class="mt-3 text-xl font-semibold text-[var(--dashboard-ink)]">
-              Move funds into goals
-            </h2>
-            <p class="mt-2 text-sm text-[var(--dashboard-muted)]">
-              Keep progress steady by transferring a fixed amount each week.
-            </p>
+          <UPageCard>
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+                Next action
+              </p>
+              <h2 class="mt-3 text-xl font-semibold">
+                Move funds into goals
+              </h2>
+              <p class="mt-2 text-sm text-muted">
+                Keep progress steady by transferring a fixed amount each week.
+              </p>
 
-            <div class="mt-6 space-y-4 text-sm">
-              <div class="flex items-center justify-between">
-                <span class="text-[var(--dashboard-muted)]">Suggested transfer</span>
-                <span class="font-semibold text-[var(--dashboard-ink)]">
-                  {{ formatCurrency(3500) }}
-                </span>
+              <div class="mt-6 space-y-4 text-sm">
+                <div class="flex items-center justify-between">
+                  <span class="text-muted">Suggested transfer</span>
+                  <span class="font-semibold">
+                    {{ formatCurrency(3500) }}
+                  </span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-muted">Goal to prioritize</span>
+                  <span class="font-semibold">
+                    Emergency fund
+                  </span>
+                </div>
               </div>
-              <div class="flex items-center justify-between">
-                <span class="text-[var(--dashboard-muted)]">Goal to prioritize</span>
-                <span class="font-semibold text-[var(--dashboard-ink)]">
-                  Emergency fund
-                </span>
-              </div>
+
+              <UButton class="mt-6" variant="soft">
+                Schedule transfer
+              </UButton>
             </div>
-
-            <UButton class="mt-6 w-full" variant="soft">
-              Schedule transfer
-            </UButton>
           </UPageCard>
         </div>
       </div>
-    </UContainer>
-  </section>
+    </template>
+  </UDashboardPanel>
 </template>

@@ -88,7 +88,7 @@
         <UPageCard>
           <div class="flex items-center justify-between gap-3">
             <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-accent)]">
+              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
                 Category library
               </p>
               <p class="mt-2 text-sm text-muted">
