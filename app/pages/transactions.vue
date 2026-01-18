@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import type { Account } from '~/types/account'
-  import type { Category } from '~/types/category'
-  import type { Transaction } from '~/types/transaction'
+  import type { Account } from '~~/types/account'
+  import type { Category } from '~~/types/category'
+  import type { Transaction } from '~~/types/transaction'
 
   definePageMeta({
     layout: 'dashboard'
@@ -192,8 +192,8 @@
 </script>
 
 <template>
-  <section class="pb-16 pt-10">
-    <UContainer>
+  <UDashboardPanel>
+    <template #body>
       <div class="flex flex-col gap-8">
         <DashboardHeader
           page="Transactions"
@@ -209,59 +209,44 @@
         </DashboardHeader>
 
         <section class="grid gap-4 md:grid-cols-3">
-          <UPageCard class="dashboard-card">
-            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-muted)]">
-              Income
-            </p>
-            <p class="mt-4 text-2xl font-semibold text-[var(--dashboard-ink)]">
-              {{ formatCurrency(totals.income) }}
-            </p>
-            <p class="mt-2 text-xs text-[var(--dashboard-muted)]">
-              2 deposits this period
-            </p>
-          </UPageCard>
+          <DashboardStatCard
+            :style="{ animationDelay: '0s' }"
+            title="Income"
+            :value="formatCurrency(totals.income)"
+            note="2 deposits this period"
+          />
 
-          <UPageCard class="dashboard-card">
-            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-muted)]">
-              Expenses
-            </p>
-            <p class="mt-4 text-2xl font-semibold text-[var(--dashboard-ink)]">
-              {{ formatCurrency(totals.expense) }}
-            </p>
-            <p class="mt-2 text-xs text-[var(--dashboard-muted)]">
-              3 purchases logged
-            </p>
-          </UPageCard>
+          <DashboardStatCard
+            :style="{ animationDelay: '0.08s' }"
+            title="Expenses"
+            :value="formatCurrency(totals.expense)"
+            note="3 purchases logged"
+          />
 
-          <UPageCard class="dashboard-card">
-            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-muted)]">
-              Transfers
-            </p>
-            <p class="mt-4 text-2xl font-semibold text-[var(--dashboard-ink)]">
-              {{ formatCurrency(totals.transfer) }}
-            </p>
-            <p class="mt-2 text-xs text-[var(--dashboard-muted)]">
-              Between internal accounts
-            </p>
-          </UPageCard>
+          <DashboardStatCard
+            :style="{ animationDelay: '0.16s' }"
+            title="Transfers"
+            :value="formatCurrency(totals.transfer)"
+            note="Between internal accounts"
+          />
         </section>
 
-        <UPageCard class="dashboard-card">
+        <UPageCard>
           <div class="flex items-center justify-between gap-3">
             <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-accent)]">
+              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
                 Activity feed
               </p>
-              <p class="mt-2 text-sm text-[var(--dashboard-muted)]">
+              <p class="mt-2 text-sm text-muted">
                 Tap into details or edit entries.
               </p>
             </div>
-            <UButton variant="ghost" size="xs">
+            <UButton variant="ghost" size="md">
               Filter
             </UButton>
           </div>
 
-          <div class="mt-6 divide-y divide-[var(--dashboard-border)]">
+          <div class="mt-6 divide-y divide-default">
             <div
               v-for="transaction in transactions"
               :key="transaction._id"
@@ -275,10 +260,10 @@
                   <UIcon :name="categoryMap[transaction.categoryId]?.icon || 'i-lucide-circle'" class="size-4" />
                 </span>
                 <div>
-                  <p class="font-semibold text-[var(--dashboard-ink)]">
+                  <p class="font-semibold">
                     {{ transaction.description }}
                   </p>
-                  <p class="text-xs text-[var(--dashboard-muted)]">
+                  <p class="text-xs text-muted">
                     {{ categoryMap[transaction.categoryId]?.name || 'Category' }} - {{
                       accountMap[transaction.accountId]?.name || 'Account'
                     }}
@@ -289,14 +274,12 @@
                 <p
                   :class="[
                     'text-sm font-semibold',
-                    transaction.type === 'expense'
-                      ? 'text-[var(--dashboard-negative)]'
-                      : 'text-[var(--dashboard-ink)]'
+                    transaction.type === 'expense' ? 'text-error' : ''
                   ]"
                 >
                   {{ transaction.type === 'expense' ? '-' : '+' }}{{ formatCurrency(transaction.amount) }}
                 </p>
-                <p class="text-xs text-[var(--dashboard-muted)]">
+                <p class="text-xs text-muted">
                   {{ formatDate(transaction.date) }}
                   <span v-if="transaction.relatedAccountId">
                     - Transfer from {{ accountMap[transaction.relatedAccountId]?.name || 'Account' }}
@@ -307,6 +290,6 @@
           </div>
         </UPageCard>
       </div>
-    </UContainer>
-  </section>
+    </template>
+  </UDashboardPanel>
 </template>

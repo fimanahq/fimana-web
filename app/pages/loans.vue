@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import type { Loan } from '~/types/loan'
-  import type { LoanPayment } from '~/types/loanPayment'
+  import type { Loan } from '~~/types/loan'
+  import type { LoanPayment } from '~~/types/loanPayment'
 
   definePageMeta({
     layout: 'dashboard'
