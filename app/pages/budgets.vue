@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import type { Budget } from '~/types/budget'
-  import type { BudgetCategory } from '~/types/budgetCategory'
-  import type { Category } from '~/types/category'
+  import type { Budget } from '~~/types/budget'
+  import type { Category } from '~~/types/category'
+  import type { BudgetCategory } from '~~/types/budgetCategory'
 
   definePageMeta({
     layout: 'dashboard'
@@ -130,8 +130,8 @@
 </script>
 
 <template>
-  <section class="pb-16 pt-10">
-    <UContainer>
+  <UDashboardPanel>
+    <template #body>
       <div class="flex flex-col gap-8">
         <DashboardHeader
           page="Budgets"
@@ -147,121 +147,102 @@
         </DashboardHeader>
 
         <section class="grid gap-4 lg:grid-cols-3">
-          <UPageCard class="dashboard-card">
-            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-muted)]">
-              Current month
-            </p>
-            <p class="mt-4 text-2xl font-semibold text-[var(--dashboard-ink)]">
-              {{ currentBudget ? formatCurrency(currentBudget.totalLimit) : '--' }}
-            </p>
-            <p class="mt-2 text-xs text-[var(--dashboard-muted)]">
-              {{ currentBudget ? formatMonth(currentBudget.month) : 'No budget yet' }}
-            </p>
-          </UPageCard>
+          <DashboardStatCard
+            :style="{ animationDelay: '0s' }"
+            title="Current month"
+            :value="currentBudget ? formatCurrency(currentBudget.totalLimit) : '--'"
+            :note="currentBudget ? formatMonth(currentBudget.month) : 'No budget yet'"
+          />
 
-          <UPageCard class="dashboard-card">
-            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-muted)]">
-              Allocated
-            </p>
-            <p class="mt-4 text-2xl font-semibold text-[var(--dashboard-ink)]">
-              {{ currentBudget ? formatCurrency(currentBudget.totalAllocated) : '--' }}
-            </p>
-            <p class="mt-2 text-xs text-[var(--dashboard-muted)]">
-              {{ currentBudget ? currentBudget.allocations.length : 0 }} categories funded
-            </p>
-          </UPageCard>
+          <DashboardStatCard
+            :style="{ animationDelay: '0.08s' }"
+            title="Allocated"
+            :value="currentBudget ? formatCurrency(currentBudget.totalAllocated) : '--'"
+            :note="`${currentBudget ? currentBudget.allocations.length : 0} categories funded`"
+          />
 
-          <UPageCard class="dashboard-card">
-            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-muted)]">
-              Unassigned
-            </p>
-            <p class="mt-4 text-2xl font-semibold text-[var(--dashboard-ink)]">
-              {{
-                currentBudget
-                  ? formatCurrency(currentBudget.totalLimit - currentBudget.totalAllocated)
-                  : '--'
-              }}
-            </p>
-            <p class="mt-2 text-xs text-[var(--dashboard-muted)]">
-              Available to assign
-            </p>
-          </UPageCard>
+          <DashboardStatCard
+            :style="{ animationDelay: '0.16s' }"
+            title="Unassigned"
+            :value="currentBudget ? formatCurrency(currentBudget.totalLimit - currentBudget.totalAllocated) : '--'"
+            note="Available to assign"
+          />
         </section>
 
         <div class="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-          <UPageCard class="dashboard-card">
-            <div class="flex items-center justify-between gap-3">
-              <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-accent)]">
-                  Budget history
-                </p>
-                <p class="mt-2 text-sm text-[var(--dashboard-muted)]">
-                  Compare recent monthly limits.
-                </p>
-              </div>
-              <UButton variant="ghost" size="xs">
-                View all
-              </UButton>
-            </div>
-
-            <div class="mt-6 divide-y divide-[var(--dashboard-border)]">
-              <div
-                v-for="budget in budgetAllocations"
-                :key="budget._id"
-                class="flex flex-wrap items-center justify-between gap-4 py-4 text-sm"
-              >
+          <div>
+            <UPageCard>
+              <div class="flex justify-between items-center gap-3">
                 <div>
-                  <p class="font-semibold text-[var(--dashboard-ink)]">
-                    {{ formatMonth(budget.month) }}
+                  <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+                    Budget history
                   </p>
-                  <p class="text-xs text-[var(--dashboard-muted)]">
-                    Created {{ budget.createdAt.toLocaleDateString('en-US') }}
-                  </p>
-                </div>
-                <div class="text-right">
-                  <p class="font-semibold text-[var(--dashboard-ink)]">
-                    {{ formatCurrency(budget.totalLimit) }}
-                  </p>
-                  <p class="text-xs text-[var(--dashboard-muted)]">
-                    {{ formatCurrency(budget.totalAllocated) }} allocated
+                  <p class="mt-2 text-sm text-muted">
+                    Compare recent monthly limits.
                   </p>
                 </div>
+                <UButton variant="ghost" size="xs">
+                  View all
+                </UButton>
               </div>
-            </div>
-          </UPageCard>
 
-          <UPageCard class="dashboard-card">
-            <div class="flex items-center justify-between gap-3">
-              <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-accent)]">
-                  Category allocations
-                </p>
-                <p class="mt-2 text-sm text-[var(--dashboard-muted)]">
-                  Current month limits by category.
-                </p>
+              <div class="mt-6 divide-y divide-default">
+                <div
+                  v-for="budget in budgetAllocations"
+                  :key="budget._id"
+                  class="flex flex-wrap items-center justify-between gap-4 py-4 text-sm"
+                >
+                  <div>
+                    <p class="font-semibold">
+                      {{ formatMonth(budget.month) }}
+                    </p>
+                    <p class="text-xs text-muted">
+                      Created {{ budget.createdAt.toLocaleDateString('en-US') }}
+                    </p>
+                  </div>
+                  <div class="text-right">
+                    <p class="font-semibold">
+                      {{ formatCurrency(budget.totalLimit) }}
+                    </p>
+                    <p class="text-xs text-muted">
+                      {{ formatCurrency(budget.totalAllocated) }} allocated
+                    </p>
+                  </div>
+                </div>
               </div>
-              <UButton variant="ghost" size="xs">
-                Edit
-              </UButton>
-            </div>
+            </UPageCard>
+          </div>
 
-            <div class="mt-6 space-y-4">
-              <div
-                v-for="allocation in currentBudget?.allocations || []"
-                :key="allocation._id"
-                class="rounded-2xl border border-[var(--dashboard-border)] bg-[var(--dashboard-surface-soft)] p-4 text-sm"
-              >
-                <p class="font-semibold text-[var(--dashboard-ink)]">
-                  {{ allocation.name }}
-                </p>
-                <p class="mt-2 text-xs text-[var(--dashboard-muted)]">
-                  Limit {{ formatCurrency(allocation.limit) }}
-                </p>
+          <div>
+            <UPageCard>
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+                    Category allocations
+                  </p>
+                  <p class="mt-2 text-sm text-muted">
+                    Current month limits by category.
+                  </p>
+                </div>
+                <UButton variant="ghost" size="xs">
+                  Edit
+                </UButton>
               </div>
-            </div>
-          </UPageCard>
+
+              <div class="mt-6 space-y-4">
+                <UPageCard v-for="allocation in currentBudget?.allocations || []" :key="allocation._id" variant="soft">
+                  <p class="font-semibold">
+                    {{ allocation.name }}
+                  </p>
+                  <p class="mt-2 text-xs text-muted">
+                    Limit {{ formatCurrency(allocation.limit) }}
+                  </p>
+                </UPageCard>
+              </div>
+            </UPageCard>
+          </div>
         </div>
       </div>
-    </UContainer>
-  </section>
+    </template>
+  </UDashboardPanel>
 </template>

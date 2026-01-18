@@ -125,11 +125,11 @@
             :style="{ animationDelay: '0.08s' }"
             title="Primary account"
             :value="topAccount?.name || 'No accounts'"
-            :note="`${topAccount ? formatCurrency(topAccount.balance) : 'Add an account to start'}`"
+            :note="topAccount ? formatCurrency(topAccount.balance) : 'Add an account to start'"
           />
 
           <DashboardStatCard
-            :style="{ animationDelay: '0.08s' }"
+            :style="{ animationDelay: '0.16s' }"
             title="Archived accounts"
             :value="archivedCount"
             note="Hidden from daily totals"
