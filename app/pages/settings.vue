@@ -27,9 +27,9 @@
           title="Account preferences"
           description="Keep your currency and budget calendar aligned."
         >
-          <UButton variant="soft" icon="i-lucide-save">
+          <PrimaryButton icon="i-lucide-save">
             Save changes
-          </UButton>
+          </PrimaryButton>
           <UButton variant="outline" icon="i-lucide-refresh-cw">
             Reset
           </UButton>

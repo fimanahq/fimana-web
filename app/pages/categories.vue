@@ -77,9 +77,9 @@
           title="Income and expense labels"
           description="Keep transactions clean with consistent categories."
         >
-          <UButton variant="soft" icon="i-lucide-plus">
+          <PrimaryButton icon="i-lucide-plus">
             New category
-          </UButton>
+          </PrimaryButton>
           <UButton variant="outline" icon="i-lucide-sparkles">
             Suggest
           </UButton>

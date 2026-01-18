@@ -105,9 +105,9 @@
           title="Cash and bank balances"
           description="Track where your money sits across cash, banks, and e-wallets."
         >
-          <UButton variant="soft" icon="i-lucide-plus">
+          <PrimaryButton icon="i-lucide-plus">
             Add account
-          </UButton>
+          </PrimaryButton>
           <UButton variant="outline" icon="i-lucide-download">
             Export
           </UButton>

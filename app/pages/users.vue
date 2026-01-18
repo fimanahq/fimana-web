@@ -56,9 +56,9 @@
           title="Team access"
           description="Control roles and account status."
         >
-          <UButton variant="soft" icon="i-lucide-user-plus">
+          <PrimaryButton icon="i-lucide-user-plus">
             Invite user
-          </UButton>
+          </PrimaryButton>
           <UButton variant="outline" icon="i-lucide-shield-check">
             Permissions
           </UButton>

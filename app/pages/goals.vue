@@ -63,9 +63,9 @@
           title="Savings milestones"
           description="Keep long-term goals visible and funded."
         >
-          <UButton variant="soft" icon="i-lucide-plus">
+          <PrimaryButton icon="i-lucide-plus">
             New goal
-          </UButton>
+          </PrimaryButton>
           <UButton variant="outline" icon="i-lucide-calendar">
             Timeline
           </UButton>

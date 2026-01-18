@@ -1,9 +1,9 @@
 export default defineAppConfig({
   ui: {
     colors: {
-      primary: 'brand',
+      primary: 'green',
       secondary: 'orange',
-      neutral: 'neutral'
+      neutral: 'zinc'
     },
     input: {
       defaultVariants: {
@@ -32,13 +32,6 @@ export default defineAppConfig({
       slots: {
         root: 'rounded-xl'
       },
-      // variants: {
-      //   variant: {
-      //     subtle: {
-      //       root: 'bg-primary/5 dark:bg-primary/5'
-      //     }
-      //   }
-      // },
       defaultVariants: {
         variant: 'subtle'
       }

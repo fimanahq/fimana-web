@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import PrimaryButton from '~/components/PrimaryButton.vue'
+
   definePageMeta({
     layout: 'dashboard'
   })
@@ -16,7 +18,7 @@
       note: 'last 30 days',
       icon: 'i-lucide-wallet',
       trendIcon: 'i-lucide-trending-up',
-      toneClass: 'text-[var(--dashboard-positive)]'
+      toneClass: 'text-success'
     },
     {
       label: 'Monthly spend',
@@ -25,7 +27,7 @@
       note: 'vs last month',
       icon: 'i-lucide-receipt',
       trendIcon: 'i-lucide-trending-down',
-      toneClass: 'text-[var(--dashboard-positive)]'
+      toneClass: 'text-success'
     },
     {
       label: 'Savings rate',
@@ -34,7 +36,7 @@
       note: 'goal 18%',
       icon: 'i-lucide-piggy-bank',
       trendIcon: 'i-lucide-trending-up',
-      toneClass: 'text-[var(--dashboard-positive)]'
+      toneClass: 'text-success'
     },
     {
       label: 'Net worth',
@@ -43,7 +45,7 @@
       note: 'last quarter',
       icon: 'i-lucide-bar-chart-3',
       trendIcon: 'i-lucide-trending-up',
-      toneClass: 'text-[var(--dashboard-positive)]'
+      toneClass: 'text-success'
     }
   ]
 
@@ -112,13 +114,13 @@
           title="Welcome back, Joel."
           description="Here's how your money moved this month."
         >
-          <UButton variant="soft">
+          <PrimaryButton>
             This month
-          </UButton>
+          </PrimaryButton>
           <UButton variant="ghost">
             Last 90 days
           </UButton>
-          <UButton variant="subtle" icon="i-lucide-sliders-horizontal">
+          <UButton variant="outline" icon="i-lucide-sliders-horizontal">
             Customize
           </UButton>
         </DashboardHeader>
@@ -143,79 +145,81 @@
         </section>
 
         <section class="grid gap-6 lg:grid-cols-[2.1fr_1fr]">
-          <UPageCard class="bg-[radial-gradient(ellipse_at_right,var(--tw-gradient-stops))] from-primary to-transparent">
-            <div class="flex flex-wrap items-start justify-between gap-4">
-              <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-accent)]">
-                  Cashflow
-                </p>
-                <h2 class="mt-2 text-2xl font-semibold ">
-                  $38,920
-                </h2>
-                <p class="text-sm text-muted">
-                  Income is ahead of expenses by $6,120.
-                </p>
-              </div>
-              <div class="flex items-center gap-3 text-xs">
-                <span class="flex items-center gap-2 text-muted">
-                  <span class="size-2 rounded-full bg-[var(--dashboard-accent)]" />
-                  Inflow
-                </span>
-                <span class="flex items-center gap-2 text-muted">
-                  <span class="size-2 rounded-full bg-[var(--dashboard-highlight)]" />
-                  Outflow
-                </span>
-              </div>
-            </div>
-
-            <div class="mt-8 flex items-end gap-4">
-              <div
-                v-for="bar in cashflowBars"
-                :key="bar.label"
-                class="flex flex-col items-center gap-2"
-              >
-                <div class="relative h-32 w-4 overflow-hidden rounded-full bg-[var(--dashboard-border)]">
-                  <span
-                    class="absolute bottom-0 w-full rounded-full"
-                    :class="{
-                      'bg-[var(--dashboard-accent)]': bar.tone === 'accent',
-                      'bg-[var(--dashboard-highlight)]': bar.tone === 'highlight',
-                      'bg-[var(--dashboard-accent-soft)]': bar.tone === 'soft'
-                    }"
-                    :style="{ height: `${bar.height}%` }"
-                  />
+          <UPageCard>
+            <div>
+              <div class="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+                    Cashflow
+                  </p>
+                  <h2 class="mt-2 text-2xl font-semibold ">
+                    $38,920
+                  </h2>
+                  <p class="text-sm text-muted">
+                    Income is ahead of expenses by $6,120.
+                  </p>
                 </div>
-                <span class="text-[10px] font-semibold text-muted">
-                  {{ bar.label }}
-                </span>
+                <div class="flex items-center gap-3 text-xs">
+                  <span class="flex items-center gap-2 text-muted">
+                    <span class="size-2 rounded-full bg-primary" />
+                    Inflow
+                  </span>
+                  <span class="flex items-center gap-2 text-muted">
+                    <span class="size-2 rounded-full bg-secondary" />
+                    Outflow
+                  </span>
+                </div>
               </div>
-            </div>
 
-            <div class="mt-8 grid gap-4 sm:grid-cols-3">
-              <UPageCard>
-                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
-                  Income
-                </p>
-                <p class="mt-2 text-lg font-semibold ">
-                  $22,540
-                </p>
-              </UPageCard>
-              <UPageCard>
-                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
-                  Expenses
-                </p>
-                <p class="mt-2 text-lg font-semibold ">
-                  $16,420
-                </p>
-              </UPageCard>
-              <UPageCard>
-                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
-                  Savings
-                </p>
-                <p class="mt-2 text-lg font-semibold ">
-                  $6,120
-                </p>
-              </UPageCard>
+              <div class="mt-8 flex items-end gap-4">
+                <div
+                  v-for="bar in cashflowBars"
+                  :key="bar.label"
+                  class="flex flex-col items-center gap-2"
+                >
+                  <div class="relative h-32 w-4 overflow-hidden rounded-full bg-elevated">
+                    <span
+                      class="absolute bottom-0 w-full rounded-full"
+                      :class="{
+                        'bg-primary': bar.tone === 'accent',
+                        'bg-secondary': bar.tone === 'highlight',
+                        'bg-primary/25': bar.tone === 'soft'
+                      }"
+                      :style="{ height: `${bar.height}%` }"
+                    />
+                  </div>
+                  <span class="text-[10px] font-semibold text-muted">
+                    {{ bar.label }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="mt-8 grid gap-4 sm:grid-cols-3">
+                <UPageCard>
+                  <p class="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
+                    Income
+                  </p>
+                  <p class="mt-2 text-lg font-semibold ">
+                    $22,540
+                  </p>
+                </UPageCard>
+                <UPageCard>
+                  <p class="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
+                    Expenses
+                  </p>
+                  <p class="mt-2 text-lg font-semibold ">
+                    $16,420
+                  </p>
+                </UPageCard>
+                <UPageCard>
+                  <p class="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
+                    Savings
+                  </p>
+                  <p class="mt-2 text-lg font-semibold ">
+                    $6,120
+                  </p>
+                </UPageCard>
+              </div>
             </div>
           </UPageCard>
 
@@ -223,14 +227,14 @@
             <UPageCard>
               <div class="flex items-center justify-between">
                 <div>
-                  <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-accent)]">
+                  <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
                     Upcoming bills
                   </p>
                   <p class="mt-2 text-lg font-semibold ">
                     $2,330 due
                   </p>
                 </div>
-                <UButton variant="ghost" size="xs">
+                <UButton variant="ghost" size="md">
                   View all
                 </UButton>
               </div>
@@ -255,7 +259,7 @@
             </UPageCard>
 
             <UPageCard>
-              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-accent)]">
+              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
                 Focus this week
               </p>
               <h3 class="mt-3 text-lg font-semibold ">
@@ -263,7 +267,7 @@
               </h3>
               <ul class="mt-4 space-y-3 text-sm text-muted">
                 <li v-for="item in focusItems" :key="item" class="flex items-start gap-2">
-                  <span class="mt-1 size-2 rounded-full bg-[var(--dashboard-highlight)]" />
+                  <span class="mt-1 size-2 rounded-full bg-secondary" />
                   <span>{{ item }}</span>
                 </li>
               </ul>
@@ -278,14 +282,14 @@
           <UPageCard>
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-accent)]">
+                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
                   Budgets
                 </p>
                 <h2 class="mt-2 text-2xl font-semibold ">
                   Guardrails in range
                 </h2>
               </div>
-              <UButton variant="ghost" size="xs">
+              <UButton variant="ghost" size="md">
                 Edit budgets
               </UButton>
             </div>
@@ -300,9 +304,9 @@
                     ${{ budget.used }} / ${{ budget.limit }}
                   </p>
                 </div>
-                <div class="mt-3 h-2 rounded-full bg-[var(--dashboard-border)]">
+                <div class="mt-3 h-2 rounded-full bg-elevated">
                   <div
-                    class="h-2 rounded-full bg-[var(--dashboard-accent)]"
+                    class="h-2 rounded-full bg-primary"
                     :style="{ width: `${budget.percent}%` }"
                   />
                 </div>
@@ -316,20 +320,20 @@
           <UPageCard>
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-accent)]">
+                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
                   Goals
                 </p>
                 <h2 class="mt-2 text-2xl font-semibold ">
                   Savings progress
                 </h2>
               </div>
-              <UButton variant="ghost" size="xs">
+              <UButton variant="ghost" size="md">
                 Add goal
               </UButton>
             </div>
 
             <div class="mt-6 space-y-5">
-              <UPageCard v-for="goal in goals" :key="goal.name">
+              <UPageCard v-for="goal in goals" :key="goal.name" variant="soft">
                 <div class="flex items-center justify-between">
                   <p class="text-sm font-semibold ">
                     {{ goal.name }}
@@ -338,9 +342,9 @@
                     {{ goal.target }}
                   </p>
                 </div>
-                <div class="mt-3 h-2 rounded-full bg-[var(--dashboard-border)]">
+                <div class="mt-3 h-2 rounded-full bg-elevated">
                   <div
-                    class="h-2 rounded-full bg-[var(--dashboard-highlight)]"
+                    class="h-2 rounded-full bg-secondary"
                     :style="{ width: `${goal.progress}%` }"
                   />
                 </div>
@@ -355,50 +359,50 @@
 
         <section id="reports" class="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
           <UPageCard>
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-accent)]">
-                  Recent activity
-                </p>
-                <h2 class="mt-2 text-2xl font-semibold ">
-                  Latest transactions
-                </h2>
-              </div>
-              <UButton variant="ghost" size="xs">
-                Export CSV
-              </UButton>
-            </div>
-
-            <ul class="mt-6 divide-y divide-[var(--dashboard-border)]">
-              <li
-                v-for="transaction in transactions"
-                :key="transaction.name + transaction.date"
-                class="flex flex-wrap items-center justify-between gap-3 py-4 text-sm"
-              >
+            <div>
+              <div class="flex items-center justify-between">
                 <div>
-                  <p class="font-semibold ">
-                    {{ transaction.name }}
+                  <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+                    Recent activity
                   </p>
-                  <p class="text-xs text-muted">
-                    {{ transaction.category }} - {{ transaction.date }}
-                  </p>
+                  <h2 class="mt-2 text-2xl font-semibold ">
+                    Latest transactions
+                  </h2>
                 </div>
-                <span
-                  :class="[
-                    'font-semibold',
-                    transaction.amount.startsWith('+')
-                      ? 'text-[var(--dashboard-positive)]'
-                      : ''
-                  ]"
+                <UButton variant="ghost" size="md">
+                  Export CSV
+                </UButton>
+              </div>
+
+              <ul class="mt-6 divide-y divide-default">
+                <li
+                  v-for="transaction in transactions"
+                  :key="transaction.name + transaction.date"
+                  class="flex flex-wrap items-center justify-between gap-3 py-4 text-sm"
                 >
-                  {{ transaction.amount }}
-                </span>
-              </li>
-            </ul>
+                  <div>
+                    <p class="font-semibold ">
+                      {{ transaction.name }}
+                    </p>
+                    <p class="text-xs text-muted">
+                      {{ transaction.category }} - {{ transaction.date }}
+                    </p>
+                  </div>
+                  <span
+                    :class="[
+                      'font-semibold',
+                      transaction.amount.startsWith('+') ? 'text-success' : ''
+                    ]"
+                  >
+                    {{ transaction.amount }}
+                  </span>
+                </li>
+              </ul>
+            </div>
           </UPageCard>
 
           <UPageCard>
-            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-accent)]">
+            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
               Spending mix
             </p>
             <h2 class="mt-2 text-2xl font-semibold ">
@@ -409,6 +413,7 @@
               <UPageCard
                 v-for="category in categories"
                 :key="category.name"
+                variant="soft"
               >
                 <div class="flex items-center justify-between text-sm">
                   <p class="font-semibold ">
@@ -418,9 +423,9 @@
                     {{ category.amount }}
                   </p>
                 </div>
-                <div class="mt-3 h-2 rounded-full bg-[var(--dashboard-border)]">
+                <div class="mt-3 h-2 rounded-full bg-elevated">
                   <div
-                    class="h-2 rounded-full bg-[var(--dashboard-accent)]"
+                    class="h-2 rounded-full bg-primary"
                     :style="{ width: `${category.percent}%` }"
                   />
                 </div>
@@ -441,30 +446,4 @@
 </template>
 
 <style scoped>
-@keyframes rise-in {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.dashboard-card {
-  border: 1px solid var(--dashboard-border);
-  background: var(--dashboard-surface);
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
-}
-
-.stat-card {
-  animation: rise-in 0.7s ease-out both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .stat-card {
-    animation: none;
-  }
-}
 </style>

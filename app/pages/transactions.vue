@@ -200,9 +200,9 @@
           title="Every movement, tracked"
           description="Review inflows, outflows, and transfers in one stream."
         >
-          <UButton variant="soft" icon="i-lucide-plus">
+          <PrimaryButton icon="i-lucide-plus">
             Add transaction
-          </UButton>
+          </PrimaryButton>
           <UButton variant="outline" icon="i-lucide-download">
             Export
           </UButton>

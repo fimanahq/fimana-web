@@ -11,13 +11,13 @@
 <template>
   <header class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
     <div class="space-y-2">
-      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-[var(--dashboard-accent)]">
+      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">
         {{ page }}
       </p>
-      <h1 class="text-3xl font-semibold text-[var(--dashboard-ink)] sm:text-4xl">
+      <h1 class="text-3xl font-semibold sm:text-4xl">
         {{ title }}
       </h1>
-      <p class="text-[var(--dashboard-muted)]">
+      <p class="text-muted">
         {{ description }}
       </p>
     </div>

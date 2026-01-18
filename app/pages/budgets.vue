@@ -138,9 +138,9 @@
           title="Monthly guardrails"
           description="Plan your spend and keep each category within range."
         >
-          <UButton variant="soft" icon="i-lucide-plus">
+          <PrimaryButton icon="i-lucide-plus">
             New budget
-          </UButton>
+          </PrimaryButton>
           <UButton variant="outline" icon="i-lucide-filter">
             Filter
           </UButton>

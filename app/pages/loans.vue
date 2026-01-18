@@ -119,9 +119,9 @@
           title="Outstanding obligations"
           description="Stay on top of payments and interest schedules."
         >
-          <UButton variant="soft" icon="i-lucide-plus">
+          <PrimaryButton icon="i-lucide-plus">
             Add loan
-          </UButton>
+          </PrimaryButton>
           <UButton variant="outline" icon="i-lucide-file-text">
             Statements
           </UButton>
