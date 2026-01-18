@@ -2,10 +2,12 @@
   import * as v from 'valibot'
   import type { FormSubmitEvent } from '@nuxt/ui'
   import NewPasswordFormField from '~/components/NewPasswordFormField.vue'
+  import { signup } from '~/services/auth'
 
   const schema = v.pipe(
     v.object({
-      name: v.pipe(v.string(), v.minLength(1, 'Please enter full name')),
+      firstName: v.pipe(v.string(), v.minLength(1, 'Please enter first name')),
+      lastName: v.pipe(v.string(), v.minLength(1, 'Please enter last name')),
       email: v.pipe(v.string(), v.email('Invalid email')),
       password: v.pipe(v.string(), v.minLength(8, 'Must be at least 8 characters')),
       confirmPassword: v.pipe(v.string())
@@ -23,16 +25,44 @@
   type Schema = v.InferOutput<typeof schema>
 
   const state = reactive({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     confirmPassword: ''
   })
 
   const toast = useToast()
+  const authToken = useAuthToken()
+  const isSubmitting = ref(false)
+
   async function onSubmit(event: FormSubmitEvent<Schema>) {
-    toast.add({ title: 'Success', description: 'The form has been submitted.', color: 'success' })
-    console.log(event.data)
+    try {
+      isSubmitting.value = true
+      const { email, password } = event.data
+      const firstName = event.data.firstName.trim()
+      const lastName = event.data.lastName.trim()
+      const response = await signup({ firstName, lastName, email, password })
+
+      if (response.token) {
+        authToken.setToken(response.token)
+      }
+
+      toast.add({
+        title: 'Account created',
+        description: response.message || 'Welcome to FiMana.',
+        color: 'success'
+      })
+      await navigateTo(response.token ? '/dashboard' : '/login')
+    } catch (error) {
+      const description = error instanceof Error
+        ? error.message
+        : 'Unable to create your account right now.'
+
+      toast.add({ title: 'Signup failed', description, color: 'error' })
+    } finally {
+      isSubmitting.value = false
+    }
   }
 </script>
 
@@ -66,9 +96,15 @@
           class="space-y-6 w-full"
           @submit="onSubmit"
         >
-          <UFormField label="Full Name" name="name">
-            <UInput v-model="state.name" class="w-full" variant="subtle" />
-          </UFormField>
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <UFormField label="First Name" name="firstName">
+              <UInput v-model="state.firstName" class="w-full" variant="subtle" />
+            </UFormField>
+
+            <UFormField label="Last Name" name="lastName">
+              <UInput v-model="state.lastName" class="w-full" variant="subtle" />
+            </UFormField>
+          </div>
 
           <UFormField label="Email" name="email">
             <UInput v-model="state.email" class="w-full" variant="subtle" />
@@ -90,6 +126,8 @@
             type="submit"
             class="items-center"
             size="xl"
+            :loading="isSubmitting"
+            :disabled="isSubmitting"
             block
           >
             Create Account <UIcon name="i-lucide-arrow-right" />

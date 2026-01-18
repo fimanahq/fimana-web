@@ -1,15 +1,14 @@
-import type { ObjectId } from './index'
+import type { ObjectId, Timestamp } from './index'
 
 export type UserRole = 'user' | 'admin'
 export type UserStatus = 'active' | 'suspended'
 
-export interface User {
-  _id: ObjectId
+export interface User extends Timestamp {
+  id?: ObjectId
   email: string
-  passwordHash: string
-  name: string
-  role: UserRole
-  status: UserStatus
-  createdAt: Date
-  updatedAt: Date
+  password: string
+  firstName: string
+  lastName: string
+  role?: UserRole
+  status?: UserStatus
 }
