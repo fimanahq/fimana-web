@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import type { User } from '~/types/user'
+  import type { User } from '~~/types/user'
 
   definePageMeta({
     layout: 'dashboard'
@@ -48,8 +48,8 @@
 </script>
 
 <template>
-  <section class="pb-16 pt-10">
-    <UContainer>
+  <UDashboardPanel>
+    <template #body>
       <div class="flex flex-col gap-8">
         <DashboardHeader
           page="Users"
@@ -64,32 +64,32 @@
           </UButton>
         </DashboardHeader>
 
-        <UPageCard class="dashboard-card">
+        <UPageCard>
           <div class="flex items-center justify-between gap-3">
             <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-accent)]">
+              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
                 Directory
               </p>
-              <p class="mt-2 text-sm text-[var(--dashboard-muted)]">
+              <p class="mt-2 text-sm text-muted">
                 Admins can update access settings.
               </p>
             </div>
-            <UButton variant="ghost" size="xs">
+            <UButton variant="ghost" size="md">
               Manage roles
             </UButton>
           </div>
 
-          <div class="mt-6 divide-y divide-[var(--dashboard-border)]">
+          <div class="mt-6 divide-y divide-default">
             <div
               v-for="user in users"
               :key="user._id"
               class="flex flex-wrap items-center justify-between gap-4 py-4 text-sm"
             >
               <div>
-                <p class="font-semibold text-[var(--dashboard-ink)]">
+                <p class="font-semibold">
                   {{ user.name }}
                 </p>
-                <p class="text-xs text-[var(--dashboard-muted)]">
+                <p class="text-xs text-muted">
                   {{ user.email }} - Joined {{ formatDate(user.createdAt) }}
                 </p>
               </div>
@@ -100,7 +100,7 @@
                 <UBadge :color="user.status === 'active' ? 'success' : 'warning'">
                   {{ user.status }}
                 </UBadge>
-                <span class="text-[var(--dashboard-muted)]">
+                <span class="text-muted">
                   Updated {{ formatDate(user.updatedAt) }}
                 </span>
               </div>
@@ -108,6 +108,6 @@
           </div>
         </UPageCard>
       </div>
-    </UContainer>
-  </section>
+    </template>
+  </UDashboardPanel>
 </template>
