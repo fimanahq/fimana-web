@@ -93,7 +93,7 @@
 
   const upcomingPayments = computed(() =>
     loanPayments
-      .filter((payment) => payment.status === 'pending')
+      .filter(payment => payment.status === 'pending')
       .sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime())
   )
 
@@ -111,8 +111,8 @@
 </script>
 
 <template>
-  <section class="pb-16 pt-10">
-    <UContainer>
+  <UDashboardPanel>
+    <template #body>
       <div class="flex flex-col gap-8">
         <DashboardHeader
           page="Loans"
@@ -128,13 +128,13 @@
         </DashboardHeader>
 
         <div class="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
-          <UPageCard class="dashboard-card">
+          <UPageCard>
             <div class="flex items-center justify-between gap-3">
               <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-accent)]">
+                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
                   Active loans
                 </p>
-                <p class="mt-2 text-sm text-[var(--dashboard-muted)]">
+                <p class="mt-2 text-sm text-muted">
                   Track principal and interest details.
                 </p>
               </div>
@@ -144,17 +144,13 @@
             </div>
 
             <div class="mt-6 space-y-4">
-              <div
-                v-for="loan in loans"
-                :key="loan._id"
-                class="rounded-2xl border border-[var(--dashboard-border)] bg-[var(--dashboard-surface-soft)] p-4"
-              >
+              <UPageCard v-for="loan in loans" :key="loan._id" variant="soft">
                 <div class="flex items-start justify-between gap-4">
                   <div>
-                    <p class="text-sm font-semibold text-[var(--dashboard-ink)]">
+                    <p class="text-sm font-semibold">
                       {{ loan.lender }}
                     </p>
-                    <p class="text-xs text-[var(--dashboard-muted)]">
+                    <p class="text-xs text-muted">
                       Started {{ formatDate(loan.startDate) }} - {{ loan.paymentType }}
                     </p>
                   </div>
@@ -164,71 +160,79 @@
                 </div>
                 <div class="mt-4 grid gap-3 text-sm sm:grid-cols-3">
                   <div>
-                    <p class="text-xs text-[var(--dashboard-muted)]">Principal</p>
-                    <p class="font-semibold text-[var(--dashboard-ink)]">
+                    <p class="text-xs text-muted">
+                      Principal
+                    </p>
+                    <p class="font-semibold">
                       {{ formatCurrency(loan.principal) }}
                     </p>
                   </div>
                   <div>
-                    <p class="text-xs text-[var(--dashboard-muted)]">Interest rate</p>
-                    <p class="font-semibold text-[var(--dashboard-ink)]">
+                    <p class="text-xs text-muted">
+                      Interest rate
+                    </p>
+                    <p class="font-semibold">
                       {{ formatRate(loan.interestRate) }}
                     </p>
                   </div>
                   <div>
-                    <p class="text-xs text-[var(--dashboard-muted)]">Payment type</p>
-                    <p class="font-semibold text-[var(--dashboard-ink)]">
+                    <p class="text-xs text-muted">
+                      Payment type
+                    </p>
+                    <p class="font-semibold">
                       {{ loan.paymentType === '1-cutoff' ? 'Monthly' : 'Twice monthly' }}
                     </p>
                   </div>
                 </div>
-              </div>
+              </UPageCard>
             </div>
           </UPageCard>
 
-          <UPageCard class="dashboard-card">
-            <div class="flex items-center justify-between gap-3">
-              <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--dashboard-accent)]">
-                  Upcoming payments
-                </p>
-                <p class="mt-2 text-sm text-[var(--dashboard-muted)]">
-                  Next cutoffs by due date.
-                </p>
+          <UPageCard>
+            <div>
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+                    Upcoming payments
+                  </p>
+                  <p class="mt-2 text-sm text-muted">
+                    Next cutoffs by due date.
+                  </p>
+                </div>
+                <UButton variant="ghost" size="xs">
+                  Pay now
+                </UButton>
               </div>
-              <UButton variant="ghost" size="xs">
-                Pay now
-              </UButton>
-            </div>
 
-            <div class="mt-6 space-y-4 text-sm">
-              <div
-                v-for="payment in upcomingPayments"
-                :key="payment._id"
-                class="rounded-2xl border border-[var(--dashboard-border)] bg-[var(--dashboard-surface-soft)] p-4"
-              >
-                <div class="flex items-center justify-between gap-3">
-                  <div>
-                    <p class="font-semibold text-[var(--dashboard-ink)]">
-                      {{ loanMap[payment.loanId]?.lender || 'Loan' }}
-                    </p>
-                    <p class="text-xs text-[var(--dashboard-muted)]">
-                      Due {{ formatDate(payment.dueDate) }}
-                    </p>
+              <div class="mt-6 space-y-4 text-sm">
+                <UPageCard
+                  v-for="payment in upcomingPayments"
+                  :key="payment._id"
+                  variant="soft"
+                >
+                  <div class="flex items-center justify-between gap-3">
+                    <div>
+                      <p class="font-semibold">
+                        {{ loanMap[payment.loanId]?.lender || 'Loan' }}
+                      </p>
+                      <p class="text-xs text-muted">
+                        Due {{ formatDate(payment.dueDate) }}
+                      </p>
+                    </div>
+                    <span class="font-semibold">
+                      {{ formatCurrency(payment.amount) }}
+                    </span>
                   </div>
-                  <span class="font-semibold text-[var(--dashboard-ink)]">
-                    {{ formatCurrency(payment.amount) }}
-                  </span>
-                </div>
-                <div class="mt-3 flex items-center justify-between text-xs text-[var(--dashboard-muted)]">
-                  <span>Principal {{ formatCurrency(payment.principal) }}</span>
-                  <span>Interest {{ formatCurrency(payment.interest) }}</span>
-                </div>
+                  <div class="mt-3 flex items-center justify-between text-xs text-muted">
+                    <span>Principal {{ formatCurrency(payment.principal) }}</span>
+                    <span>Interest {{ formatCurrency(payment.interest) }}</span>
+                  </div>
+                </UPageCard>
               </div>
             </div>
           </UPageCard>
         </div>
       </div>
-    </UContainer>
-  </section>
+    </template>
+  </UDashboardPanel>
 </template>
