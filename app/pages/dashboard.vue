@@ -106,7 +106,7 @@
 <template>
   <UDashboardPanel>
     <template #body>
-      <div class="flex flex-col gap-10">
+      <div class="flex flex-col gap-8">
         <DashboardHeader
           page="Dashboard"
           title="Welcome back, Joel."

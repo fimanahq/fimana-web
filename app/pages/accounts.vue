@@ -99,7 +99,7 @@
 <template>
   <UDashboardPanel>
     <template #body>
-      <div class="flex flex-col gap-10">
+      <div class="flex flex-col gap-8">
         <DashboardHeader
           page="Accounts"
           title="Cash and bank balances"
