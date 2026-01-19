@@ -1,6 +1,7 @@
 import type { UseFetchOptions } from '@vueuse/core'
 
-type Body = BodyInit | Record<string, unknown> | null | undefined
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Body = BodyInit | Record<string, any> | null | undefined
 
 export function useApi() {
   const { $api } = useNuxtApp()

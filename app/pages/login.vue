@@ -8,6 +8,7 @@
   })
 
   type Schema = v.InferOutput<typeof schema>
+  const authStore = useAuthStore()
 
   const state = reactive({
     email: '',
@@ -15,9 +16,34 @@
   })
 
   const toast = useToast()
+  const authToken = useAuthToken()
+  const isSubmitting = ref(false)
   async function onSubmit(event: FormSubmitEvent<Schema>) {
-    toast.add({ title: 'Success', description: 'The form has been submitted.', color: 'success' })
-    console.log(event.data)
+    try {
+      isSubmitting.value = true
+      const { email, password } = event.data
+      const response = await authStore.login({ email, password })
+
+      if (response.token) {
+        authToken.setToken(response.token)
+        authStore.setUser(response.user!)
+      }
+
+      toast.add({
+        title: 'Welcome back',
+        description: response.message || 'You are now logged in.',
+        color: 'success'
+      })
+      await navigateTo(response.token ? '/dashboard' : '/login')
+    } catch (error) {
+      const description = error instanceof Error
+        ? error.message
+        : 'Unable to log you in right now.'
+
+      toast.add({ title: 'Login failed', description, color: 'error' })
+    } finally {
+      isSubmitting.value = false
+    }
   }
 </script>
 
@@ -64,6 +90,8 @@
           <UButton
             type="submit"
             class="items-center"
+            :loading="isSubmitting"
+            :disabled="isSubmitting"
             block
           >
             Login <UIcon name="i-lucide-arrow-right" />

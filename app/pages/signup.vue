@@ -2,7 +2,6 @@
   import * as v from 'valibot'
   import type { FormSubmitEvent } from '@nuxt/ui'
   import NewPasswordFormField from '~/components/NewPasswordFormField.vue'
-  import { signup } from '~/services/auth'
 
   const schema = v.pipe(
     v.object({
@@ -23,6 +22,7 @@
   )
 
   type Schema = v.InferOutput<typeof schema>
+  const authStore = useAuthStore()
 
   const state = reactive({
     firstName: '',
@@ -42,7 +42,7 @@
       const { email, password } = event.data
       const firstName = event.data.firstName.trim()
       const lastName = event.data.lastName.trim()
-      const response = await signup({ firstName, lastName, email, password })
+      const response = await authStore.signup({ firstName, lastName, email, password })
 
       if (response.token) {
         authToken.setToken(response.token)
