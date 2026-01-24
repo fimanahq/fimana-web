@@ -7,7 +7,7 @@ export interface Account {
   userId: ObjectId
   name: string
   type: AccountType
-  currency: 'PHP'
+  currency: string
   balance: number
   isArchived: boolean
   createdAt: Date

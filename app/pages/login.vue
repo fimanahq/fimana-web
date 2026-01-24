@@ -8,6 +8,7 @@
   })
 
   type Schema = v.InferOutput<typeof schema>
+
   const authStore = useAuthStore()
 
   const state = reactive({
@@ -18,23 +19,24 @@
   const toast = useToast()
   const authToken = useAuthToken()
   const isSubmitting = ref(false)
+
   async function onSubmit(event: FormSubmitEvent<Schema>) {
     try {
       isSubmitting.value = true
       const { email, password } = event.data
       const response = await authStore.login({ email, password })
 
-      if (response.token) {
-        authToken.setToken(response.token)
+      if (response.accessToken) {
+        authToken.setToken(response.accessToken)
         authStore.setUser(response.user!)
-      }
 
-      toast.add({
-        title: 'Welcome back',
-        description: response.message || 'You are now logged in.',
-        color: 'success'
-      })
-      await navigateTo(response.token ? '/dashboard' : '/login')
+        toast.add({
+          title: 'Welcome back',
+          description: response.message || 'You are now logged in.',
+          color: 'success'
+        })
+        await navigateTo(response.accessToken ? '/dashboard' : '/login')
+      }
     } catch (error) {
       const description = error instanceof Error
         ? error.message

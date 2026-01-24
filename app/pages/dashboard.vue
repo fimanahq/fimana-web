@@ -1,6 +1,4 @@
 <script setup lang="ts">
-  import PrimaryButton from '~/components/PrimaryButton.vue'
-
   definePageMeta({
     layout: 'dashboard'
   })
@@ -9,6 +7,9 @@
     title: 'FiMana | Dashboard',
     description: 'Track cashflow, budgets, and upcoming bills in one view.'
   })
+
+  const authStore = useAuthStore()
+  const title = computed(() => authStore.user?.firstName ? `Welcome back, ${authStore.user?.firstName}!` : 'Welcome back!')
 
   const stats = [
     {
@@ -111,7 +112,7 @@
       <div class="flex flex-col gap-8">
         <DashboardHeader
           page="Dashboard"
-          title="Welcome back, Joel."
+          :title="title"
           description="Here's how your money moved this month."
         >
           <PrimaryButton>

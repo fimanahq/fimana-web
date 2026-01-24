@@ -1,12 +1,5 @@
 import type { User } from '~~/types/user'
 
-export interface SignupPayload {
-  firstName: string
-  lastName: string
-  email: string
-  password: string
-}
-
 export interface SignupResponse {
   token?: string
   user?: User
@@ -19,7 +12,7 @@ export interface LoginPayload {
 }
 
 export interface LoginResponse {
-  token?: string
+  accessToken?: string
   user?: User
   message?: string
 }
