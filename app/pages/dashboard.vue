@@ -113,6 +113,7 @@
         <DashboardHeader
           page="Dashboard"
           :title="title"
+          :loading-title="!authStore.user"
           description="Here's how your money moved this month."
         >
           <PrimaryButton>

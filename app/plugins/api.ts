@@ -8,7 +8,7 @@ export default defineNuxtPlugin(() => {
       Accept: 'application/json'
     },
     async onRequest({ options }) {
-      const token = authToken.getToken()
+      const token = authToken.getAccessToken()
       if (token) {
         const headers = new Headers(options.headers)
         headers.set('Authorization', `Bearer ${token}`)
@@ -17,7 +17,7 @@ export default defineNuxtPlugin(() => {
     },
     async onResponseError({ response }) {
       if (response.status === 401) {
-        authToken.clearToken()
+        authToken.clearAccessToken()
       }
     }
   })

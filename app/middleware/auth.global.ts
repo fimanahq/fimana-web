@@ -6,15 +6,15 @@ export default defineNuxtRouteMiddleware((to) => {
       || to.path.startsWith('/login')
 
   // If there's no auth token, redirect to the login page unless already on the login page
-  if (!authToken.getToken()) {
-    if (!authToken.getToken() && !isPublicRoute) {
+  if (!authToken.isAccessTokenValid()) {
+    if (!isPublicRoute) {
       return navigateTo('/login')
     }
     return
   }
 
   // If the user is already logged in and tries to access the login page, redirect to home
-  if (authToken.getToken() && to.path.startsWith('/login')) {
+  if (authToken.isAccessTokenValid() && to.path.startsWith('/login')) {
     return navigateTo('/dashboard')
   }
 

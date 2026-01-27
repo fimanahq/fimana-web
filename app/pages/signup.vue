@@ -42,18 +42,20 @@
       const { email, password } = event.data
       const firstName = event.data.firstName.trim()
       const lastName = event.data.lastName.trim()
-      const response = await authStore.signup({ firstName, lastName, email, password })
+      const response = await authStore.register(firstName, lastName, email, password)
 
-      if (response.token) {
-        authToken.setToken(response.token)
+      if (isSuccess(response)) {
+        authToken.setAccessToken(response.data.accessToken)
+        authToken.setAccessToken(response.data.refreshToken)
+        authStore.setUser(response.data.user)
+
+        toast.add({
+          title: 'Account created',
+          description: response.message || 'Welcome to FiMana.',
+          color: 'success'
+        })
+        await navigateTo(response.data.accessToken ? '/dashboard' : '/login')
       }
-
-      toast.add({
-        title: 'Account created',
-        description: response.message || 'Welcome to FiMana.',
-        color: 'success'
-      })
-      await navigateTo(response.token ? '/dashboard' : '/login')
     } catch (error) {
       const description = error instanceof Error
         ? error.message
