@@ -4,8 +4,14 @@ export default defineNuxtRouteMiddleware((to) => {
   const isPublicRoute
     = to.path === '/'
       || to.path.startsWith('/login')
+      || to.path.startsWith('/signup')
 
-  // If there's no auth token, redirect to the login page unless already on the login page
+  const isAuthRoute
+    = to.path === '/'
+      || to.path.startsWith('/login')
+      || to.path.startsWith('/signup')
+
+  // If there's no auth token, redirect to the login page unless already on a public route
   if (!authToken.isAccessTokenValid()) {
     if (!isPublicRoute) {
       return navigateTo('/login')
@@ -13,8 +19,8 @@ export default defineNuxtRouteMiddleware((to) => {
     return
   }
 
-  // If the user is already logged in and tries to access the login page, redirect to home
-  if (authToken.isAccessTokenValid() && to.path.startsWith('/login')) {
+  // If the user is already logged in and tries to access public/auth pages, redirect to dashboard
+  if (authToken.isAccessTokenValid() && isAuthRoute) {
     return navigateTo('/dashboard')
   }
 
