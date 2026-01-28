@@ -3,6 +3,10 @@
   import type { FormSubmitEvent } from '@nuxt/ui'
   import { isSuccess } from '~/utils/api'
 
+  useSeoMeta({
+    title: 'FiMana | Login'
+  })
+
   const schema = v.object({
     email: v.pipe(v.string(), v.email('Invalid email')),
     password: v.pipe(v.string(), v.minLength(8, 'Must be at least 8 characters'))

@@ -3,6 +3,10 @@
   import type { FormSubmitEvent } from '@nuxt/ui'
   import NewPasswordFormField from '~/components/NewPasswordFormField.vue'
 
+  useSeoMeta({
+    title: 'FiMana | Sign Up'
+  })
+
   const schema = v.pipe(
     v.object({
       firstName: v.pipe(v.string(), v.minLength(1, 'Please enter first name')),
