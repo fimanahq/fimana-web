@@ -26,7 +26,7 @@
         Sign in
       </UButton>
 
-      <UButton to="/login">
+      <UButton to="/signup">
         Start free
       </UButton>
     </template>

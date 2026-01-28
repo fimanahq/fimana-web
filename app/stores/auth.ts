@@ -18,13 +18,19 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
   const authToken = useAuthToken()
 
+  const userId = computed(() => user.value?.id)
+  const userFirstName = computed(() => user.value ? user.value?.firstName : '')
+  const userFullName = computed(() =>
+    user.value ? `${user.value.firstName} ${user.value.lastName}` : ''
+  )
+
   function register(
     firstName: User['firstName'],
     lastName: User['lastName'],
     email: User['email'],
     password: User['password']
   ) {
-    return api.post<RegisterResponse>('/auth/signup', {
+    return api.post<RegisterResponse>('/auth/register', {
       firstName,
       lastName,
       email,
@@ -70,7 +76,10 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   return {
-    user: computed(() => user.value),
+    user,
+    userId,
+    userFirstName,
+    userFullName,
     register,
     login,
     setUser,

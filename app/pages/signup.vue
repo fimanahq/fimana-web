@@ -46,7 +46,7 @@
 
       if (isSuccess(response)) {
         authToken.setAccessToken(response.data.accessToken)
-        authToken.setAccessToken(response.data.refreshToken)
+        authToken.setRefreshToken(response.data.refreshToken)
         authStore.setUser(response.data.user)
 
         toast.add({
@@ -81,7 +81,13 @@
       <div class="space-y-8">
         <section class="text-center justify-center space-y-6">
           <div class="flex justify-center">
-            <AppLogo class="cursor-pointer" @click="navigateTo('/')" />
+            <AppLogo
+              :width="64"
+              :height="64"
+              logo-only
+              class="cursor-pointer"
+              @click="navigateTo('/')"
+            />
           </div>
 
           <div>

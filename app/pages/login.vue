@@ -64,7 +64,13 @@
       <div class="space-y-8">
         <section class="text-center justify-center space-y-6">
           <div class="flex justify-center">
-            <AppLogo class="cursor-pointer" @click="navigateTo('/')" />
+            <AppLogo
+              :width="64"
+              :height="64"
+              logo-only
+              class="cursor-pointer"
+              @click="navigateTo('/')"
+            />
           </div>
 
           <div>

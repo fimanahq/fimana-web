@@ -1,4 +1,4 @@
-import { useSessionStorage } from '@vueuse/core'
+import { useLocalStorage } from '@vueuse/core'
 
 interface AuthToken {
   getAccessToken: () => string | undefined
@@ -12,8 +12,8 @@ interface AuthToken {
 }
 
 // TOKEN STORAGE
-const accessToken = useSessionStorage('accessToken', '')
-const refreshToken = useSessionStorage('refreshToken', '')
+const accessToken = useLocalStorage('accessToken', '')
+const refreshToken = useLocalStorage('refreshToken', '')
 
 export function useAuthToken(): AuthToken {
   function getAccessToken(): string | undefined {
