@@ -1,5 +1,8 @@
 <script setup lang="ts">
-  import type { Account } from '~~/types/account'
+  import * as v from 'valibot'
+  import { storeToRefs } from 'pinia'
+  import type { FormSubmitEvent } from '@nuxt/ui'
+  import type { AccountType } from '~~/types/account'
 
   definePageMeta({
     layout: 'dashboard'
@@ -10,71 +13,51 @@
     description: 'Track balances across cash, banks, and e-wallets.'
   })
 
-  const accounts: Account[] = [
-    {
-      _id: 'acc_01',
-      userId: 'usr_01',
-      name: 'UnionBank Checking',
-      type: 'bank',
-      currency: 'PHP',
-      balance: 48230.45,
-      isArchived: false,
-      createdAt: new Date('2024-11-01')
-    },
-    {
-      _id: 'acc_02',
-      userId: 'usr_01',
-      name: 'BPI Savings',
-      type: 'bank',
-      currency: 'PHP',
-      balance: 120000,
-      isArchived: false,
-      createdAt: new Date('2023-08-14')
-    },
-    {
-      _id: 'acc_03',
-      userId: 'usr_01',
-      name: 'GCash Wallet',
-      type: 'ewallet',
-      currency: 'PHP',
-      balance: 8420.75,
-      isArchived: false,
-      createdAt: new Date('2024-02-18')
-    },
-    {
-      _id: 'acc_04',
-      userId: 'usr_01',
-      name: 'Cash on hand',
-      type: 'cash',
-      currency: 'PHP',
-      balance: 3200,
-      isArchived: false,
-      createdAt: new Date('2024-05-06')
-    },
-    {
-      _id: 'acc_05',
-      userId: 'usr_01',
-      name: 'Visa Platinum',
-      type: 'credit',
-      currency: 'PHP',
-      balance: -14500,
-      isArchived: false,
-      createdAt: new Date('2022-11-02')
-    },
-    {
-      _id: 'acc_06',
-      userId: 'usr_01',
-      name: 'Old Savings',
-      type: 'bank',
-      currency: 'PHP',
-      balance: 0,
-      isArchived: true,
-      createdAt: new Date('2021-03-19')
+  const accountsStore = useAccountsStore()
+  const {
+    accounts,
+    activeAccounts,
+    archivedCount,
+    isSaving,
+    error
+  } = storeToRefs(accountsStore)
+
+  onMounted(() => {
+    if (!accounts.value.length) {
+      accountsStore.fetchAccounts()
     }
+  })
+
+  const accountTypeValues = ['cash', 'bank', 'ewallet', 'credit'] as const
+  const accountTypeOptions = [
+    { label: 'Cash', value: 'cash' },
+    { label: 'Bank', value: 'bank' },
+    { label: 'E-wallet', value: 'ewallet' },
+    { label: 'Credit', value: 'credit' }
   ]
 
-  const activeAccounts = computed(() => accounts.filter(account => !account.isArchived))
-  const archivedCount = computed(() => accounts.filter(account => account.isArchived).length)
+  const currencyValues = ['PHP', 'USD', 'EUR'] as const
+  const currencyOptions = currencyValues.map(currency => ({ label: currency, value: currency }))
+
+  const schema = v.object({
+    name: v.pipe(v.string(), v.trim(), v.minLength(1, 'Please enter account name')),
+    type: v.picklist(accountTypeValues, 'Select an account type'),
+    currency: v.picklist(currencyValues, 'Select a currency'),
+    balance: v.number()
+  })
+
+  type Schema = v.InferOutput<typeof schema>
+
+  const formState = reactive({
+    name: '',
+    type: 'bank' as AccountType,
+    currency: 'PHP',
+    balance: 0
+  })
+
+  const isAddModalOpen = ref(false)
+  const toast = useToast()
+
   const totalBalance = computed(() =>
     activeAccounts.value.reduce((sum, account) => sum + account.balance, 0)
   )
@@ -82,10 +65,12 @@
     [...activeAccounts.value].sort((a, b) => b.balance - a.balance)[0]
   )
 
-  const formatCurrency = (value: number) =>
+  const balanceMin = computed(() => (formState.type === 'credit' ? undefined : 0))
+
+  const formatCurrency = (value: number, currency = 'PHP') =>
     new Intl.NumberFormat('en-PH', {
       style: 'currency',
-      currency: 'PHP',
+      currency,
       maximumFractionDigits: 2
     }).format(value)
 
@@ -94,6 +79,63 @@
 
   const balanceTone = (value: number) =>
     value < 0 ? 'text-error' : ''
+
+  const resetForm = () => {
+    formState.name = ''
+    formState.type = 'bank'
+    formState.currency = 'PHP'
+    formState.balance = 0
+  }
+
+  const openAddModal = () => {
+    isAddModalOpen.value = true
+  }
+
+  const closeAddModal = () => {
+    isAddModalOpen.value = false
+  }
+
+  watch(isAddModalOpen, (isOpen) => {
+    if (!isOpen) {
+      resetForm()
+    }
+  })
+
+  const addAccount = async (event: FormSubmitEvent<Schema>) => {
+    if (isSaving.value) {
+      return
+    }
+
+    const name = event.data.name.trim()
+    if (!name) {
+      toast.add({ title: 'Account name required', color: 'error' })
+      return
+    }
+
+    const created = await accountsStore.createAccount({
+      name,
+      type: event.data.type,
+      currency: event.data.currency,
+      balance: event.data.balance
+    })
+
+    if (!created) {
+      toast.add({
+        title: 'Unable to add account',
+        description: error.value || 'Please try again.',
+        color: 'error'
+      })
+      return
+    }
+
+    toast.add({
+      title: 'Account added',
+      description: `${name} is ready to track.`,
+      color: 'success'
+    })
+
+    closeAddModal()
+  }
 </script>
 
 <template>
@@ -105,7 +147,7 @@
           title="Cash and bank balances"
           description="Track where your money sits across cash, banks, and e-wallets."
         >
-          <PrimaryButton icon="i-lucide-plus">
+          <PrimaryButton icon="i-lucide-plus" @click="openAddModal">
             Add account
           </PrimaryButton>
           <UButton variant="outline" icon="i-lucide-download">
@@ -135,6 +177,66 @@
             note="Hidden from daily totals"
           />
         </section>
+
+        <UModal v-model:open="isAddModalOpen" title="New account">
+          <template #body>
+            <p class="text-sm text-muted">
+              Add a cash, bank, or wallet account to track balances.
+            </p>
+
+            <UForm
+              :schema="schema"
+              :state="formState"
+              class="mt-6 space-y-4"
+              @submit="addAccount"
+            >
+              <div class="grid gap-4 md:grid-cols-2">
+                <UFormField label="Account name" name="name">
+                  <UInput v-model="formState.name" class="w-full" variant="subtle" />
+                </UFormField>
+
+                <UFormField label="Account type" name="type">
+                  <USelect
+                    v-model="formState.type"
+                    :items="accountTypeOptions"
+                    class="w-full"
+                    variant="subtle"
+                  />
+                </UFormField>
+              </div>
+
+              <div class="grid gap-4 md:grid-cols-2">
+                <UFormField label="Currency" name="currency">
+                  <USelect
+                    v-model="formState.currency"
+                    :items="currencyOptions"
+                    class="w-full"
+                    variant="subtle"
+                  />
+                </UFormField>
+
+                <UFormField label="Starting balance" name="balance">
+                  <UInputNumber
+                    v-model="formState.balance"
+                    class="w-full"
+                    variant="subtle"
+                    :min="balanceMin"
+                    :step="0.01"
+                  />
+                </UFormField>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-3">
+                <UButton type="submit" icon="i-lucide-plus" :loading="isSaving" :disabled="isSaving">
+                  Add account
+                </UButton>
+                <UButton variant="ghost" @click="closeAddModal">
+                  Cancel
+                </UButton>
+              </div>
+            </UForm>
+          </template>
+        </UModal>
 
         <UPageCard>
           <div class="flex items-center justify-between gap-3">
@@ -171,7 +273,7 @@
                   {{ account.isArchived ? 'Archived' : 'Active' }}
                 </span>
                 <span :class="['text-sm font-semibold', balanceTone(account.balance)]">
-                  {{ formatCurrency(account.balance) }}
+                  {{ formatCurrency(account.balance, account.currency) }}
                 </span>
               </div>
             </div>
