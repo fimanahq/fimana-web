@@ -26,6 +26,8 @@ export const useCategoriesStore = defineStore('categories', () => {
 
   const normalizeCategory = (category: CategoryResponse): Category => ({
     ...category,
+    iconStyle: category.iconStyle || 'line-duotone',
+    isActive: category.isActive ?? true,
     createdAt: category.createdAt ? new Date(category.createdAt) : undefined,
     updatedAt: category.updatedAt ? new Date(category.updatedAt) : undefined
   })
