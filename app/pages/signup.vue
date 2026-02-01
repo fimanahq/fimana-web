@@ -3,6 +3,10 @@
   import type { FormSubmitEvent } from '@nuxt/ui'
   import NewPasswordFormField from '~/components/NewPasswordFormField.vue'
 
+  useSeoMeta({
+    title: 'FiMana | Sign Up'
+  })
+
   const schema = v.pipe(
     v.object({
       firstName: v.pipe(v.string(), v.minLength(1, 'Please enter first name')),
@@ -42,18 +46,20 @@
       const { email, password } = event.data
       const firstName = event.data.firstName.trim()
       const lastName = event.data.lastName.trim()
-      const response = await authStore.signup({ firstName, lastName, email, password })
+      const response = await authStore.register(firstName, lastName, email, password)
 
-      if (response.token) {
-        authToken.setToken(response.token)
+      if (isSuccess(response)) {
+        authToken.setAccessToken(response.data.accessToken)
+        authToken.setRefreshToken(response.data.refreshToken)
+        authStore.setUser(response.data.user)
+
+        toast.add({
+          title: 'Account created',
+          description: response.message || 'Welcome to FiMana.',
+          color: 'success'
+        })
+        await navigateTo(response.data.accessToken ? '/dashboard' : '/login')
       }
-
-      toast.add({
-        title: 'Account created',
-        description: response.message || 'Welcome to FiMana.',
-        color: 'success'
-      })
-      await navigateTo(response.token ? '/dashboard' : '/login')
     } catch (error) {
       const description = error instanceof Error
         ? error.message
@@ -79,7 +85,13 @@
       <div class="space-y-8">
         <section class="text-center justify-center space-y-6">
           <div class="flex justify-center">
-            <AppLogo class="cursor-pointer" @click="navigateTo('/')" />
+            <AppLogo
+              :width="64"
+              :height="64"
+              logo-only
+              class="cursor-pointer"
+              @click="navigateTo('/')"
+            />
           </div>
 
           <div>

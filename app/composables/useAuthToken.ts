@@ -1,31 +1,61 @@
-import type { ComputedRef } from 'vue'
-import { computed } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 
 interface AuthToken {
-  clearToken: () => void
-  getToken: () => null | string | undefined
-  isValid: ComputedRef<boolean>
-  setToken: (newToken: string) => void
+  getAccessToken: () => string | undefined
+  isAccessTokenValid: () => boolean
+  setAccessToken: (newToken: string) => void
+  clearAccessToken: () => void
+  getRefreshToken: () => string | undefined
+  isRefreshTokenValid: () => boolean
+  setRefreshToken: (newToken: string) => void
+  clearRefreshToken: () => void
 }
 
 // TOKEN STORAGE
-const tokenStorage = useLocalStorage('token', '')
+const accessToken = useLocalStorage('accessToken', '')
+const refreshToken = useLocalStorage('refreshToken', '')
 
 export function useAuthToken(): AuthToken {
-  const isValid = computed<boolean>(() => !!tokenStorage.value && tokenStorage.value.length > 10)
-
-  function getToken(): null | string | undefined {
-    return tokenStorage.value
+  function getAccessToken(): string | undefined {
+    return accessToken.value
   }
 
-  function setToken(newToken: string): void {
-    tokenStorage.value = newToken
+  function isAccessTokenValid(): boolean {
+    return !!accessToken.value && accessToken.value.length > 10
   }
 
-  function clearToken(): void {
-    tokenStorage.value = null
+  function setAccessToken(newToken: string): void {
+    accessToken.value = newToken
   }
 
-  return { isValid, getToken, setToken, clearToken }
+  function clearAccessToken(): void {
+    accessToken.value = ''
+  }
+
+  function getRefreshToken(): string | undefined {
+    return refreshToken.value
+  }
+
+  function isRefreshTokenValid(): boolean {
+    return !!refreshToken.value && refreshToken.value.length > 10
+  }
+
+  function setRefreshToken(newToken: string): void {
+    refreshToken.value = newToken
+  }
+
+  function clearRefreshToken(): void {
+    refreshToken.value = ''
+  }
+
+  return {
+    getAccessToken,
+    isAccessTokenValid,
+    setAccessToken,
+    clearAccessToken,
+    getRefreshToken,
+    isRefreshTokenValid,
+    setRefreshToken,
+    clearRefreshToken
+  }
 }

@@ -7,17 +7,18 @@
 
   const colorMode = useColorMode()
   const appConfig = useAppConfig()
+  const authStore = useAuthStore()
 
   const colors = ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose']
   const neutrals = ['slate', 'gray', 'zinc', 'neutral', 'stone']
 
-  const user = ref({
-    name: 'John Doe',
+  const user = computed(() => ({
+    name: authStore.userFullName,
     avatar: {
       src: 'https://github.com/benjamincanac.png',
-      alt: 'John Doe'
+      alt: authStore.userFullName || 'User'
     }
-  })
+  }))
 
   const items = computed<DropdownMenuItem[][]>(() => ([
     [
@@ -119,7 +120,10 @@
     [
       {
         label: 'Log out',
-        icon: 'i-lucide-log-out'
+        icon: 'i-lucide-log-out',
+        onSelect: () => {
+          authStore.logout()
+        }
       }
     ]
   ]))

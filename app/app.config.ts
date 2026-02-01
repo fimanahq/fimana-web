@@ -1,11 +1,21 @@
 export default defineAppConfig({
   ui: {
     colors: {
-      primary: 'green',
+      primary: 'blue',
       secondary: 'orange',
-      neutral: 'zinc'
+      neutral: 'slate'
     },
     input: {
+      defaultVariants: {
+        size: 'lg'
+      }
+    },
+    select: {
+      defaultVariants: {
+        size: 'lg'
+      }
+    },
+    inputNumber: {
       defaultVariants: {
         size: 'lg'
       }

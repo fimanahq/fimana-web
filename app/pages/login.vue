@@ -1,6 +1,11 @@
 <script setup lang="ts">
   import * as v from 'valibot'
   import type { FormSubmitEvent } from '@nuxt/ui'
+  import { isSuccess } from '~/utils/api'
+
+  useSeoMeta({
+    title: 'FiMana | Login'
+  })
 
   const schema = v.object({
     email: v.pipe(v.string(), v.email('Invalid email')),
@@ -24,18 +29,19 @@
     try {
       isSubmitting.value = true
       const { email, password } = event.data
-      const response = await authStore.login({ email, password })
+      const response = await authStore.login(email, password)
 
-      if (response.accessToken) {
-        authToken.setToken(response.accessToken)
-        authStore.setUser(response.user!)
+      if (isSuccess(response)) {
+        authToken.setAccessToken(response.data.accessToken)
+        authToken.setRefreshToken(response.data.refreshToken)
+        authStore.setUser(response.data.user)
 
         toast.add({
           title: 'Welcome back',
           description: response.message || 'You are now logged in.',
           color: 'success'
         })
-        await navigateTo(response.accessToken ? '/dashboard' : '/login')
+        await navigateTo(response.data.accessToken ? '/dashboard' : '/login')
       }
     } catch (error) {
       const description = error instanceof Error
@@ -62,7 +68,13 @@
       <div class="space-y-8">
         <section class="text-center justify-center space-y-6">
           <div class="flex justify-center">
-            <AppLogo class="cursor-pointer" @click="navigateTo('/')" />
+            <AppLogo
+              :width="64"
+              :height="64"
+              logo-only
+              class="cursor-pointer"
+              @click="navigateTo('/')"
+            />
           </div>
 
           <div>
