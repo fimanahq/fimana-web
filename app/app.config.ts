@@ -10,6 +10,16 @@ export default defineAppConfig({
         size: 'lg'
       }
     },
+    select: {
+      defaultVariants: {
+        size: 'lg'
+      }
+    },
+    inputNumber: {
+      defaultVariants: {
+        size: 'lg'
+      }
+    },
     button: {
       defaultVariants: {
         size: 'lg'

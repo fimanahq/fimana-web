@@ -8,6 +8,14 @@ interface CreateAccountPayload {
   balance: number
 }
 
+interface UpdateAccountPayload {
+  name?: string
+  type?: AccountType
+  currency?: string
+  balance?: number
+  isArchived?: boolean
+}
+
 type AccountResponse = Omit<Account, 'createdAt'> & { createdAt: string | Date }
 type AccountsPayload = AccountResponse[] | AccountResponse | null | undefined
 
@@ -89,6 +97,58 @@ export const useAccountsStore = defineStore('accounts', () => {
     }
   }
 
+  async function updateAccount(accountId: string, payload: UpdateAccountPayload) {
+    isSaving.value = true
+    error.value = null
+
+    try {
+      const response = await api.patch<AccountResponse>(`/accounts/${accountId}`, payload)
+
+      if (!isSuccess(response)) {
+        error.value = response.message || 'Unable to update account.'
+        return null
+      }
+
+      if (!response.data) {
+        error.value = 'Account data was not returned.'
+        return null
+      }
+
+      const normalized = normalizeAccount(response.data)
+      accounts.value = accounts.value.map(account =>
+        account && account._id === normalized._id ? normalized : account
+      )
+      return normalized
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : 'Unable to update account.'
+      return null
+    } finally {
+      isSaving.value = false
+    }
+  }
+
+  async function deleteAccount(accountId: string) {
+    isSaving.value = true
+    error.value = null
+
+    try {
+      const response = await api.delete<null>(`/accounts/${accountId}`)
+
+      if (!isSuccess(response)) {
+        error.value = response.message || 'Unable to delete account.'
+        return false
+      }
+
+      accounts.value = accounts.value.filter(account => account && account._id !== accountId)
+      return true
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : 'Unable to delete account.'
+      return false
+    } finally {
+      isSaving.value = false
+    }
+  }
+
   return {
     accounts,
     activeAccounts,
@@ -97,7 +157,9 @@ export const useAccountsStore = defineStore('accounts', () => {
     isSaving,
     error,
     fetchAccounts,
-    createAccount
+    createAccount,
+    updateAccount,
+    deleteAccount
   }
 })
 
