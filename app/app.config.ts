@@ -75,6 +75,17 @@ export default defineAppConfig({
           }
         }
       }
+    },
+    formField: {
+      slots: {
+        label: 'text-muted'
+      }
+    },
+    modal: {
+      slots: {
+        content: 'divide-y-0',
+        title: 'text-xl'
+      }
     }
   }
 })

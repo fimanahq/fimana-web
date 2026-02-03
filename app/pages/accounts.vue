@@ -23,18 +23,36 @@
   } = storeToRefs(accountsStore)
 
   onMounted(() => {
-    if (!accounts.value.length) {
-      accountsStore.fetchAccounts()
-    }
+    accountsStore.fetchAccounts()
   })
 
   const accountTypeValues = ['cash', 'bank', 'ewallet', 'credit'] as const
   const accountTypeOptions = [
-    { label: 'Cash', value: 'cash' },
-    { label: 'Bank', value: 'bank' },
-    { label: 'E-wallet', value: 'ewallet' },
-    { label: 'Credit', value: 'credit' }
-  ]
+    {
+      label: 'Cash',
+      value: 'cash' satisfies AccountType,
+      icon: 'i-solar-hand-money-bold-duotone',
+      color: 'success'
+    },
+    {
+      label: 'Bank',
+      value: 'bank' satisfies AccountType,
+      icon: 'i-solar-buildings-bold-duotone',
+      color: 'primary'
+    },
+    {
+      label: 'E-wallet',
+      value: 'ewallet' satisfies AccountType,
+      icon: 'i-solar-wallet-bold-duotone',
+      color: 'warning'
+    },
+    {
+      label: 'Credit',
+      value: 'credit' satisfies AccountType,
+      icon: 'i-solar-card-bold-duotone',
+      color: 'error'
+    }
+  ] as const
 
   const currencyValues = ['PHP', 'USD', 'EUR'] as const
   const currencyOptions = currencyValues.map(currency => ({ label: currency, value: currency }))
@@ -377,32 +395,27 @@
           />
         </section>
 
-        <UModal v-model:open="isAddModalOpen" title="New account">
+        <UModal
+          v-model:open="isAddModalOpen"
+          title="New account"
+          description="Add a cash, bank, or wallet account to track balances."
+        >
           <template #body>
-            <p class="text-sm text-muted">
-              Add a cash, bank, or wallet account to track balances.
-            </p>
-
             <UForm
               :schema="schema"
               :state="formState"
-              class="mt-6 space-y-4"
+              class="space-y-6"
               @submit="addAccount"
             >
+              <UFormField label="Account type" name="type">
+                <IconRadioGroup v-model="formState.type" :items="accountTypeOptions" />
+              </UFormField>
+
               <UFormField label="Account name" name="name">
                 <UInput v-model="formState.name" class="w-full" variant="subtle" />
               </UFormField>
 
-              <UFormField label="Account type" name="type">
-                <USelect
-                  v-model="formState.type"
-                  :items="accountTypeOptions"
-                  class="w-full"
-                  variant="subtle"
-                />
-              </UFormField>
-
-              <div class="grid gap-4 md:grid-cols-[1fr_2fr]">
+              <div class="grid gap-4 md:grid-cols-[2fr_3fr]">
                 <UFormField label="Currency" name="currency">
                   <USelect
                     v-model="formState.currency"
@@ -423,7 +436,10 @@
                 </UFormField>
               </div>
 
-              <div class="flex flex-wrap items-center gap-3">
+              <div class="flex flex-wrap items-center justify-end gap-3 mt-16">
+                <UButton variant="ghost" @click="closeAddModal">
+                  Cancel
+                </UButton>
                 <UButton
                   type="submit"
                   icon="i-lucide-plus"
@@ -432,37 +448,29 @@
                 >
                   Add account
                 </UButton>
-                <UButton variant="ghost" @click="closeAddModal">
-                  Cancel
-                </UButton>
               </div>
             </UForm>
           </template>
         </UModal>
 
-        <UModal v-model:open="isEditModalOpen" title="Edit account">
+        <UModal
+          v-model:open="isEditModalOpen"
+          title="Edit account"
+          description="Update the account details and current balance."
+        >
           <template #body>
-            <p class="text-sm text-muted">
-              Update the account details and current balance.
-            </p>
-
             <UForm
               :schema="schema"
               :state="editFormState"
-              class="mt-6 space-y-4"
+              class="space-y-6"
               @submit="updateAccount"
             >
-              <UFormField label="Account name" name="name">
-                <UInput v-model="editFormState.name" class="w-full" variant="subtle" />
+              <UFormField label="Account type" name="type">
+                <IconRadioGroup v-model="editFormState.type" :items="accountTypeOptions" />
               </UFormField>
 
-              <UFormField label="Account type" name="type">
-                <USelect
-                  v-model="editFormState.type"
-                  :items="accountTypeOptions"
-                  class="w-full"
-                  variant="subtle"
-                />
+              <UFormField label="Account name" name="name">
+                <UInput v-model="editFormState.name" class="w-full" variant="subtle" />
               </UFormField>
 
               <div class="grid gap-4 md:grid-cols-[1fr_2fr]">
@@ -486,7 +494,10 @@
                 </UFormField>
               </div>
 
-              <div class="flex flex-wrap items-center gap-3">
+              <div class="flex flex-wrap items-center justify-end gap-3 mt-16">
+                <UButton variant="ghost" @click="closeEditModal">
+                  Cancel
+                </UButton>
                 <UButton
                   type="submit"
                   icon="i-lucide-save"
@@ -494,9 +505,6 @@
                   :disabled="isSaving"
                 >
                   Save changes
-                </UButton>
-                <UButton variant="ghost" @click="closeEditModal">
-                  Cancel
                 </UButton>
               </div>
             </UForm>
