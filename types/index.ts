@@ -6,6 +6,8 @@ export interface Timestamp {
   updatedAt?: Date
 }
 
+export type AppColor = 'success' | 'primary' | 'warning' | 'error' | 'neutral' | 'lime' | 'sky' | 'rose' | 'amber' | 'emerald' | 'violet' | 'cyan' | 'pink' | 'indigo' | 'teal'
+
 export type ApiResponseStatusCode = 200 | 201 | 202 | 204 | 400 | 401 | 403 | 404 | 500
 
 export type ApiResponseStatus = 'success' | 'error'
